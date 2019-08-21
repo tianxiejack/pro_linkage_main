@@ -304,8 +304,6 @@ void CEventManager::MSG_WorkMode(void* p)
 	return ;
 }
 
-
-
 void CEventManager::MSG_JosPos(void* p)
 {
 	int dir;

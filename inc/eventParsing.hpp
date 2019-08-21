@@ -61,6 +61,39 @@ typedef enum
 	js_pov_leftUp = 0x07,
 }js_pov;
 
+
+typedef enum{
+	usb_1_8 = 0,
+	usb_special,
+	usb_enter,
+	usb_X,
+	usb_Y,
+	usb_Z
+}HK_JosParams;
+
+typedef enum{
+	hk_button_1 = 0x1,
+	hk_button_2 = 0x2,
+	hk_button_3 = 0x4,
+	hk_button_4 = 0x8,
+	hk_button_5 = 0x10,
+	hk_button_6 = 0x20,
+	hk_button_7 = 0x40,
+	hk_button_8 = 0x80,
+}hk_button;
+
+typedef enum{
+	hk_button_9 = 0x1,
+	hk_button_0 = 0x2,
+	hk_button_f1 = 0x10,
+	hk_button_f2 = 0x20,
+	hk_button_f3 = 0x40,
+	hk_button_left = 0x4,
+	hk_button_right = 0x8,
+}hk_button_spe;
+
+
+
 typedef enum _sys_msg_id_ {
 	MSGID_SYS_INIT  = 0,
    	MSGID_EXT_INPUT_TRACKCTRL,
@@ -279,7 +312,11 @@ private:
 	void parsingJostickButtonData(unsigned char* jos_data);
 	void parsingJostickAxisData(unsigned char* jos_data);
 	void buttonStopHandle(int index);
+	void parsingHKButton(unsigned char* jos_data);
+	void parsingHKJos(unsigned char* jos_data);
 
+	int HK_JosToSpeedX(int X);
+	int HK_JosToSpeedY(int Y);
 
 };
 

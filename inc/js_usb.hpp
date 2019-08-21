@@ -16,8 +16,8 @@
 
 using namespace std;
 
-#define USB_VENDOR_ID 0x11FF
-#define USB_PRODUCT_ID 0x3331
+#define USB_VENDOR_ID 	0x0483//0x11FF
+#define USB_PRODUCT_ID 	0x5710//0x3331
 
 #define BULK_ENDPOINT_OUT 1
 #define BULK_ENDPOINT_IN  2

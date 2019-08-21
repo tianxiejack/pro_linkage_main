@@ -439,9 +439,20 @@ void CEventParsing::parsingJostickAxisData(unsigned char* jos_data)
 void CEventParsing::parsingJostickEvent(unsigned char* jos_data)
 {
 	/*joystick button event*/
-	parsingJostickPovData(jos_data);
-	parsingJostickButtonData(jos_data);
-	parsingJostickAxisData(jos_data);
+	//parsingJostickPovData(jos_data);
+	//parsingJostickButtonData(jos_data);
+	//parsingJostickAxisData(jos_data);
+
+	#if 0
+	for(int i=0 ;i<8; i++)
+		printf(" %x ",jos_data[i]);
+	putchar(10);
+	#endif
+	
+	parsingHKButton(jos_data);
+	parsingHKJos(jos_data);
+
+	
 	return;
 }
 
@@ -533,9 +544,10 @@ int CEventParsing::parsingComEvent(comtype_t comtype)
     	if(checkSum== rcvBufQue.at(cmdLength-1))
     	{	
     		ComParams.comtype = comtype;
-        		switch(rcvBufQue.at(4))
-        		{
-            		case 0x01:
+    		switch(rcvBufQue.at(4))
+    		{
+			/*
+            case 0x01:
 				_Msg->MSGDRIV_send(MSGID_COM_INPUT_SELFCHECK, &ComParams);
                 			break;
 			case 0x02:
@@ -655,14 +667,15 @@ int CEventParsing::parsingComEvent(comtype_t comtype)
 			case 0x57:
 				_Msg->MSGDRIV_send(MSGID_COM_INPUT_SAVECFG, &ComParams);
 				break;
-            		default:
-               			 printf("INFO: Unknow  Control Command, please check!!!\r\n ");
-                			ret =0;
-                			break;
+    		default:
+				printf("INFO: Unknow  Control Command, please check!!!\r\n ");
+    			ret =0;
+    			break;
+             */
        		 }
     	}
     	else
-        		printf("%s,%d, checksum error:,cal is %02x,recv is %02x\n",__FILE__,__LINE__,checkSum,rcvBufQue.at(cmdLength-1));
+        	printf("%s,%d, checksum error:,cal is %02x,recv is %02x\n",__FILE__,__LINE__,checkSum,rcvBufQue.at(cmdLength-1));
 		
 	rcvBufQue.erase(rcvBufQue.begin(),rcvBufQue.begin()+cmdLength);
 	return 1;
@@ -901,3 +914,256 @@ unsigned char CEventParsing::sendcheck_sum(unsigned char *tmpbuf, int len)
 		ckeSum ^= tmpbuf[n];
 	return ckeSum;
 }
+
+
+void CEventParsing::parsingHKButton(unsigned char* jos_data)
+{
+	static unsigned char HKButton = 0;
+	static unsigned char HKButtonSpe = 0;
+	static unsigned char HKButtonEnter = 0;
+	
+	if(jos_data[usb_1_8] != HKButton)
+	{
+		switch(jos_data[usb_1_8])
+		{
+			case hk_button_1:
+				printf("button 1\n");
+				break;
+			case hk_button_2:
+				printf("button 2\n");
+				break;
+			case hk_button_3:
+				printf("button 3\n");
+				break;
+			case hk_button_4:
+				printf("button 4\n");
+				break;
+			case hk_button_5:
+				printf("button 5\n");
+				break;
+			case hk_button_6:
+				printf("button 6\n");
+				break;			
+			case hk_button_7:
+				printf("button 7\n");
+				break;
+			case hk_button_8:
+				printf("button 8\n");
+				break;
+			default:
+				break;
+		}
+	}
+	
+	if(jos_data[usb_special] != HKButtonSpe)
+	{
+		switch(jos_data[usb_special])
+		{
+			case hk_button_9:
+				printf("button 9\n");
+				break;
+			case hk_button_0:
+				printf("button 0\n");
+				break;
+			case hk_button_f1:
+				printf("button f1\n");
+				break;			
+			case hk_button_f2:
+				printf("button f2\n");
+				break;				
+			case hk_button_f3:
+				printf("button f3\n");
+				break;
+			case hk_button_left:
+				printf("button left\n");
+				break;		
+			case hk_button_right:
+				printf("button right\n");
+				break;	
+			default:
+				break;
+		}
+	}
+
+	if(jos_data[usb_enter] != HKButtonEnter)
+	{
+		if(jos_data[usb_enter] == 1)
+		{
+			printf("enter !!\n");
+		}
+	}
+	
+	HKButton = jos_data[usb_1_8];
+	HKButtonSpe = jos_data[usb_special];
+	HKButtonEnter = jos_data[usb_enter];
+	return;
+}
+
+
+void CEventParsing::parsingHKJos(unsigned char* jos_data)
+{
+	static unsigned char HKJosX = 0;
+	static unsigned char HKJosY = 0;
+	static unsigned char HKJosZ = 0;
+
+	int val;
+	if(jos_data[usb_X] != HKJosX)
+	{
+		val = HK_JosToSpeedX(jos_data[usb_X]);
+		printf("val = %d \n" ,val);
+	}
+
+	if(jos_data[usb_Y] != HKJosY)
+	{
+		val = HK_JosToSpeedY(jos_data[usb_Y]);
+		printf("val = %d \n" ,val);
+	}
+	
+	if(jos_data[usb_Z] != HKJosZ)
+	{
+		
+	}
+	
+	HKJosX = jos_data[usb_X];
+	HKJosY= jos_data[usb_Y];
+	HKJosZ= jos_data[usb_Z];
+	return;
+}
+
+int CEventParsing::HK_JosToSpeedX(int X)
+{
+	int speed;
+	switch(X)
+	{
+		case 0xef:
+			speed = -10;
+			break;
+
+		case 0xde:
+			speed = -15;
+			break;
+
+		case 0xcd:
+			speed = -25;
+			break;
+
+		case 0xbc:
+			speed = -35;
+			break;
+
+		case 0xab:
+			speed = -45;
+			break;
+
+		case 0x9a:
+			speed = -55;
+			break;
+
+		case 0x89:
+			speed = -63;
+			break;
+
+		case 0x11:
+			speed = 10;
+			break;
+
+		case 0x22:
+			speed = 15;
+			break;
+
+		case 0x33:
+			speed = 25;
+			break;
+
+		case 0x44:
+			speed = 35;
+			break;
+
+		case 0x55:
+			speed = 45;
+			break;
+
+		case 0x66:
+			speed = 55;
+			break;
+
+		case 0x77:
+			speed = 63;
+			break;
+
+		case 0x00:
+			speed = 0;
+			break;
+	}
+	return speed;
+}
+
+
+int CEventParsing::HK_JosToSpeedY(int Y)
+{
+	int speed;
+	switch(Y)
+	{
+		case 0xef:
+			speed = -10;
+			break;
+
+		case 0xde:
+			speed = -15;
+			break;
+
+		case 0xcd:
+			speed = -25;
+			break;
+
+		case 0xbc:
+			speed = -35;
+			break;
+
+		case 0xab:
+			speed = -45;
+			break;
+
+		case 0x9a:
+			speed = -55;
+			break;
+
+		case 0x89:
+			speed = -63;
+			break;
+
+		case 0x11:
+			speed = 10;
+			break;
+
+		case 0x22:
+			speed = 15;
+			break;
+
+		case 0x33:
+			speed = 25;
+			break;
+
+		case 0x44:
+			speed = 35;
+			break;
+
+		case 0x55:
+			speed = 45;
+			break;
+
+		case 0x66:
+			speed = 55;
+			break;
+
+		case 0x77:
+			speed = 63;
+			break;
+
+		case 0x00:
+			speed = 0;
+			break;
+	}
+	return speed;
+}
+

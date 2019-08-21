@@ -7,15 +7,20 @@
 
 #include "ptz_onvif_control.hpp"
 
-
 CPTZ_ONVIF::CPTZ_ONVIF()
 {
-	//m_onvifHanle = ;
+	m_onvifHanle = IOnvif::getinstance();
 }
 
 CPTZ_ONVIF::~CPTZ_ONVIF()
 {
 }
+
+void CPTZ_ONVIF::ptzStop()
+{
+	m_onvifHanle->stop();
+}
+
 
 void CPTZ_ONVIF::queryPos()
 {
@@ -30,10 +35,6 @@ void CPTZ_ONVIF::getpos(int& pan, int& til)
 }
 
 void CPTZ_ONVIF::getzoom(int& zoom)
-{
-}
-
-void CPTZ_ONVIF::ptzStop()
 {
 }
 
