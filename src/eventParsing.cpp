@@ -928,6 +928,8 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 		{
 			case hk_button_1:
 				printf("button 1\n");
+				_Msg->MSGDRIV_send(MSGID_INPUT_TEST, 0);
+				
 				break;
 			case hk_button_2:
 				printf("button 2\n");
@@ -1005,18 +1007,26 @@ void CEventParsing::parsingHKJos(unsigned char* jos_data)
 	static unsigned char HKJosX = 0;
 	static unsigned char HKJosY = 0;
 	static unsigned char HKJosZ = 0;
-
-	int val;
+	static bool xyvalid = false;
+	float val;
 	if(jos_data[usb_X] != HKJosX)
 	{
 		val = HK_JosToSpeedX(jos_data[usb_X]);
-		printf("val = %d \n" ,val);
+		ComParams.linkspeedx = val;
+		xyvalid = true;
 	}
 
 	if(jos_data[usb_Y] != HKJosY)
 	{
 		val = HK_JosToSpeedY(jos_data[usb_Y]);
-		printf("val = %d \n" ,val);
+		ComParams.linkspeedy = val;
+		xyvalid = true;			
+	}
+	
+	if(xyvalid)
+	{
+		_Msg->MSGDRIV_send(MSGID_EXT_INPUT_JOSPOS, &ComParams);
+		xyvalid = false;
 	}
 	
 	if(jos_data[usb_Z] != HKJosZ)
@@ -1030,65 +1040,65 @@ void CEventParsing::parsingHKJos(unsigned char* jos_data)
 	return;
 }
 
-int CEventParsing::HK_JosToSpeedX(int X)
+float CEventParsing::HK_JosToSpeedX(int X)
 {
-	int speed;
+	float speed;
 	switch(X)
 	{
 		case 0xef:
-			speed = -10;
+			speed = -0.15;
 			break;
 
 		case 0xde:
-			speed = -15;
+			speed = -0.3;
 			break;
 
 		case 0xcd:
-			speed = -25;
+			speed = -0.45;
 			break;
 
 		case 0xbc:
-			speed = -35;
+			speed = -0.6;
 			break;
 
 		case 0xab:
-			speed = -45;
+			speed = -0.75;
 			break;
 
 		case 0x9a:
-			speed = -55;
+			speed = -0.9;
 			break;
 
 		case 0x89:
-			speed = -63;
+			speed = -1.0;
 			break;
 
 		case 0x11:
-			speed = 10;
+			speed = 0.15;
 			break;
 
 		case 0x22:
-			speed = 15;
+			speed = 0.3;
 			break;
 
 		case 0x33:
-			speed = 25;
+			speed = 0.45;
 			break;
 
 		case 0x44:
-			speed = 35;
+			speed = 0.6;
 			break;
 
 		case 0x55:
-			speed = 45;
+			speed = 0.75;
 			break;
 
 		case 0x66:
-			speed = 55;
+			speed = 0.9;
 			break;
 
 		case 0x77:
-			speed = 63;
+			speed = 1.0;
 			break;
 
 		case 0x00:
@@ -1099,65 +1109,65 @@ int CEventParsing::HK_JosToSpeedX(int X)
 }
 
 
-int CEventParsing::HK_JosToSpeedY(int Y)
+float CEventParsing::HK_JosToSpeedY(int Y)
 {
-	int speed;
+	float speed;
 	switch(Y)
 	{
 		case 0xef:
-			speed = -10;
+			speed = -0.15;
 			break;
 
 		case 0xde:
-			speed = -15;
+			speed = -0.3;
 			break;
 
 		case 0xcd:
-			speed = -25;
+			speed = -0.45;
 			break;
 
 		case 0xbc:
-			speed = -35;
+			speed = -0.6;
 			break;
 
 		case 0xab:
-			speed = -45;
+			speed = -0.75;
 			break;
 
 		case 0x9a:
-			speed = -55;
+			speed = -0.9;
 			break;
 
 		case 0x89:
-			speed = -63;
+			speed = -1.0;
 			break;
 
 		case 0x11:
-			speed = 10;
+			speed = 0.15;
 			break;
 
 		case 0x22:
-			speed = 15;
+			speed = 0.3;
 			break;
 
 		case 0x33:
-			speed = 25;
+			speed = 0.45;
 			break;
 
 		case 0x44:
-			speed = 35;
+			speed = 0.6;
 			break;
 
 		case 0x55:
-			speed = 45;
+			speed = 0.75;
 			break;
 
 		case 0x66:
-			speed = 55;
+			speed = 0.9;
 			break;
 
 		case 0x77:
-			speed = 63;
+			speed = 1.0;
 			break;
 
 		case 0x00:

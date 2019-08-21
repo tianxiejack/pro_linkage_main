@@ -8,31 +8,37 @@
 #ifndef PTZINTERFACE_HPP_
 #define PTZINTERFACE_HPP_
 
+const float UNVALID = 2.0;
+
 class CptzInterface
 {
 public:
-		virtual void queryPos()=0;
-		virtual void queryZoom()=0;
-		virtual void getpos(int& pan, int& til)=0;
-		virtual void getzoom(int& zoom)=0;
+		virtual void queryPos(){};
+		virtual void queryZoom(){};
+		virtual void getpos(int& pan, int& til){};
+		virtual void getzoom(int& zoom){};
 
-		virtual void ptzStop()=0;
-		virtual void ptzSetPos(unsigned int posx, unsigned int posy)=0;
-		virtual void setZoomPos(unsigned int value)=0;
-		virtual void setZoomSpeed(int speed)=0;
-		virtual void setPanSpeed(int speed)=0;
-		virtual void setTiltSpeed(int speed)=0;
-		virtual void setIrisSpeed(int speed)=0;
-		virtual void setFocusFarSpeed(int speed)=0;
-		virtual void setFocusNearSpeed(int speed)=0;
+		virtual void ptzStop(){};
+		virtual void ptzSetPos(unsigned int posx, unsigned int posy){};
+		virtual void setZoomPos(unsigned int value){};
+		virtual void setZoomSpeed(int speed){};
+		virtual void setPanSpeed(int speed){};
+		virtual void setTiltSpeed(int speed){};
+		virtual void setIrisSpeed(int speed){};
+		virtual void setFocusFarSpeed(int speed){};
+		virtual void setFocusNearSpeed(int speed){};
 
-		virtual int runToPrepos(int arg = 0)=0;
-		virtual void setPrepos(int& preposx,int& preposy)=0;
-		virtual void simpleQueryZoom()=0;
+		virtual int runToPrepos(int arg = 0){};
+		virtual void setPrepos(int& preposx,int& preposy){};
+		virtual void simpleQueryZoom(){};
 
-		virtual void setMtdMonitorP(int value)=0;
-		virtual void setMtdMonitorT(int value)=0;
-		virtual void setMtdMonitorZ(int value)=0;
+		virtual void setMtdMonitorP(int value){};
+		virtual void setMtdMonitorT(int value){};
+		virtual void setMtdMonitorZ(int value){};
+
+
+		virtual void setPltSpeed(float p,float t,float z){};
+		virtual void getpos(float& pan, float& til,float& zoom){};
 };
 
 #endif /* PTZINTERFACE_HPP_ */

@@ -222,6 +222,9 @@ typedef struct{
 	vector<Get_config_t>  getConfigQueue;
 	vector<int>  defConfigQueue;
 	osdbuffer_t setosd;
+	float linkspeedx;
+	float linkspeedy;
+	float linkspeedz;
 }ComParams_t;
 
 typedef struct{
@@ -315,8 +318,8 @@ private:
 	void parsingHKButton(unsigned char* jos_data);
 	void parsingHKJos(unsigned char* jos_data);
 
-	int HK_JosToSpeedX(int X);
-	int HK_JosToSpeedY(int Y);
+	float HK_JosToSpeedX(int X);
+	float HK_JosToSpeedY(int Y);
 
 };
 

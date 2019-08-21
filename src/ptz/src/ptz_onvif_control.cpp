@@ -6,7 +6,7 @@
  */
 
 #include "ptz_onvif_control.hpp"
-
+#include <stdio.h>
 CPTZ_ONVIF::CPTZ_ONVIF()
 {
 	m_onvifHanle = IOnvif::getinstance();
@@ -21,77 +21,16 @@ void CPTZ_ONVIF::ptzStop()
 	m_onvifHanle->stop();
 }
 
-
-void CPTZ_ONVIF::queryPos()
+void CPTZ_ONVIF::setPltSpeed(float p,float t,float z)
 {
-}
-
-void CPTZ_ONVIF::queryZoom()
-{
-}
-
-void CPTZ_ONVIF::getpos(int& pan, int& til)
-{
-}
-
-void CPTZ_ONVIF::getzoom(int& zoom)
-{
-}
-
-void CPTZ_ONVIF::ptzSetPos(unsigned int posx, unsigned int posy)
-{
-}
-
-void CPTZ_ONVIF::setZoomPos(unsigned int value)
-{
-}
-
-void CPTZ_ONVIF::setZoomSpeed(int speed)
-{
-}
-
-void CPTZ_ONVIF::setPanSpeed(int speed)
-{
-}
-
-void CPTZ_ONVIF::setTiltSpeed(int speed)
-{
-}
-
-void CPTZ_ONVIF::setIrisSpeed(int speed)
-{
+	m_onvifHanle->continuesMove(p, t, z);
 }
 
 
-void CPTZ_ONVIF::setFocusFarSpeed(int speed)
+void CPTZ_ONVIF::getpos(float& pan, float& til,float& zoom)
 {
+	m_onvifHanle->getPtzStatus(pan, til, zoom);
 }
 
-void CPTZ_ONVIF::setFocusNearSpeed(int speed)
-{
-}
 
-int CPTZ_ONVIF::runToPrepos(int arg)
-{
-}
-
-void CPTZ_ONVIF::setPrepos(int& preposx,int& preposy)
-{
-}
-
-void CPTZ_ONVIF::simpleQueryZoom()
-{
-}
-
-void CPTZ_ONVIF::setMtdMonitorP(int value)
-{
-}
-
-void CPTZ_ONVIF::setMtdMonitorT(int value)
-{
-}
-
-void CPTZ_ONVIF::setMtdMonitorZ(int value)
-{
-}
 

@@ -308,42 +308,9 @@ void CEventManager::MSG_JosPos(void* p)
 {
 	int dir;
 	ComParams_t *tmp = (ComParams_t *)p;
-	if(tmp->sectrkctrl == 0x01)
-	{
-		if(!pThis->cfg_value[CFGID_RTS_trken])
-			tmp->sectrkctrl = 0;
-		pThis->winPos[0] = 1920 * ((float)tmp->platspeedx / JOS_VALUE_MAX);
-		pThis->winPos[1] = 1080 * ((float)tmp->platspeedy / JOS_VALUE_MAX);
-		pThis->_StateManager->inter_TrkSearch(tmp->sectrkctrl, (int)pThis->winPos[0], (int)pThis->winPos[1]);
-	}
-	else if(tmp->irisctrl == 0x03)
-	{
-		if(tmp->platspeedy > 0xb0)
-			dir = -1;
-		else if(tmp->platspeedy < 0x40)
-			dir = 1;
-		else
-			dir = 0;
-		pThis->_StateManager->inter_Iris_FocusCtrl(iris, dir);
-	}
-	else if(tmp->focusctrl == 0x03)
-	{
-		if(tmp->platspeedy > 0xb0)
-			dir = -1;
-		else if(tmp->platspeedy < 0x40)
-			dir = 1;
-		else
-			dir = 0;
-		pThis->_StateManager->inter_Iris_FocusCtrl(Focus, dir);
-	}
-	else if(pThis->cfg_value[CFGID_RTS_trkstat])
-	{
-		//do nothing
-	}
-	else
-	{
-		pThis->_StateManager->inter_AxisMove(tmp->platspeedx, tmp->platspeedy);
-	}
+
+	pThis->_StateManager->_state->axisMove_interface(tmp->linkspeedx, tmp->linkspeedy);
+	//pThis->_StateManager->inter_AxisMove(tmp->platspeedx, tmp->platspeedy);
 	return ;
 }
 
@@ -1799,7 +1766,11 @@ void* CEventManager::answerZoom(void *p)
 
 void CEventManager::MSG_4test(void* p)
 {
+	float pan,t,z;
+	pThis->_StateManager->_state->_ptz->getpos(pan,t,z);
 
+	printf(" get pos :  p,t,z = (%f,%f,%f)\n", pan,t,z);
+	
 	return ;
 }
 
