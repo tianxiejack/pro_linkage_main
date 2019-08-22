@@ -1018,8 +1018,15 @@ void CEventParsing::parsingHKJos(unsigned char* jos_data)
 
 	if(jos_data[usb_Y] != HKJosY)
 	{
-		val = HK_JosToSpeedY(jos_data[usb_Y]);
+		val = -1*HK_JosToSpeedY(jos_data[usb_Y]);
 		ComParams.linkspeedy = val;
+		xyvalid = true;			
+	}
+	
+	if(jos_data[usb_Z] != HKJosZ)
+	{
+		val = HK_JosToSpeedZ(jos_data[usb_Z]);
+		ComParams.linkspeedz = val;
 		xyvalid = true;			
 	}
 	
@@ -1027,11 +1034,6 @@ void CEventParsing::parsingHKJos(unsigned char* jos_data)
 	{
 		_Msg->MSGDRIV_send(MSGID_EXT_INPUT_JOSPOS, &ComParams);
 		xyvalid = false;
-	}
-	
-	if(jos_data[usb_Z] != HKJosZ)
-	{
-		
 	}
 	
 	HKJosX = jos_data[usb_X];
@@ -1113,6 +1115,74 @@ float CEventParsing::HK_JosToSpeedY(int Y)
 {
 	float speed;
 	switch(Y)
+	{
+		case 0xef:
+			speed = -0.15;
+			break;
+
+		case 0xde:
+			speed = -0.3;
+			break;
+
+		case 0xcd:
+			speed = -0.45;
+			break;
+
+		case 0xbc:
+			speed = -0.6;
+			break;
+
+		case 0xab:
+			speed = -0.75;
+			break;
+
+		case 0x9a:
+			speed = -0.9;
+			break;
+
+		case 0x89:
+			speed = -1.0;
+			break;
+
+		case 0x11:
+			speed = 0.15;
+			break;
+
+		case 0x22:
+			speed = 0.3;
+			break;
+
+		case 0x33:
+			speed = 0.45;
+			break;
+
+		case 0x44:
+			speed = 0.6;
+			break;
+
+		case 0x55:
+			speed = 0.75;
+			break;
+
+		case 0x66:
+			speed = 0.9;
+			break;
+
+		case 0x77:
+			speed = 1.0;
+			break;
+
+		case 0x00:
+			speed = 0;
+			break;
+	}
+	return speed;
+}
+
+float CEventParsing::HK_JosToSpeedZ(int Z)
+{
+	float speed;
+	switch(Z)
 	{
 		case 0xef:
 			speed = -0.15;

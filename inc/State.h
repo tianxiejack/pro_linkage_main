@@ -79,6 +79,7 @@ public:
 public:
 	void switchSensor_interface(int chid);
 	void axisMove_interface(float x, float y);
+	void axisMove_interface(float p, float t,float z);
 	void Ctrl_Iris(int dir);
 	void Ctrl_Focus(int dir);
 	void init_sigaction();

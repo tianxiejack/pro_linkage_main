@@ -334,22 +334,25 @@ void State::switchSensor_interface(int chid)
 
 void State::axisMove_interface(float x, float y)
 {	
-	//m_Platform->PlatformCtrl_VirtualInput(m_plt, DevUsr_AcqJoystickXInput, x);
-	//m_Platform->PlatformCtrl_VirtualInput(m_plt, DevUsr_AcqJoystickYInput, y);
+	m_Platform->PlatformCtrl_VirtualInput(m_plt, DevUsr_AcqJoystickXInput, x);
+	m_Platform->PlatformCtrl_VirtualInput(m_plt, DevUsr_AcqJoystickYInput, y);
 
-	//m_pltInput.iTrkAlgState= 0;
-	//m_Platform->PlatformCtrl_TrackerInput(m_plt, &m_pltInput);
-	//m_Platform->PlatformCtrl_TrackerOutput(m_plt, &m_pltOutput);
-	//printf("%s : LINE : %d   , x = %f , y = %f \n",__func__, __LINE__,  m_pltOutput.fPlatformDemandX, m_pltOutput.fPlatformDemandY);
+	m_pltInput.iTrkAlgState= 0;
+	m_Platform->PlatformCtrl_TrackerInput(m_plt, &m_pltInput);
+	m_Platform->PlatformCtrl_TrackerOutput(m_plt, &m_pltOutput);
+	printf("%s : LINE : %d   , x = %f , y = %f \n",__func__, __LINE__,  m_pltOutput.fPlatformDemandX, m_pltOutput.fPlatformDemandY);
 
-	//_ptz->setPanSpeed(m_ptzSpeed->GetPanSpeed(m_pltOutput.fPlatformDemandX));
-	//_ptz->setTiltSpeed(m_ptzSpeed->GetTiltSpeed(m_pltOutput.fPlatformDemandY));
-
-	_ptz->setPltSpeed(x,y,UNVALID);
+	_ptz->setPanSpeed(m_ptzSpeed->GetPanSpeed(m_pltOutput.fPlatformDemandX));
+	_ptz->setTiltSpeed(m_ptzSpeed->GetTiltSpeed(m_pltOutput.fPlatformDemandY));
 
 	return ;
 }
 
+void State::axisMove_interface(float p, float t,float z)
+{	
+	_ptz->setPltSpeed(p,t,z);
+	return ;
+}
 
 void State::Ctrl_Iris(int dir)
 {

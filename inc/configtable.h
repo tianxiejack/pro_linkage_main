@@ -8,6 +8,8 @@
 
 typedef void (*notifyZoom)(int); 
 
+const float UNVALID = 2.0;
+
 typedef enum {
 	eSen_CH0	= 0x00,
 	eSen_CH1	= 0x01,

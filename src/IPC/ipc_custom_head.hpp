@@ -44,6 +44,7 @@ typedef enum
 	read_shm_block,
 	read_shm_single,
 	read_shm_usrosd,
+	
 }CMD_ID;
 
 

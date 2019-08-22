@@ -309,7 +309,7 @@ void CEventManager::MSG_JosPos(void* p)
 	int dir;
 	ComParams_t *tmp = (ComParams_t *)p;
 
-	pThis->_StateManager->_state->axisMove_interface(tmp->linkspeedx, tmp->linkspeedy);
+	pThis->_StateManager->_state->axisMove_interface(tmp->linkspeedx, tmp->linkspeedy,tmp->linkspeedz);
 	//pThis->_StateManager->inter_AxisMove(tmp->platspeedx, tmp->platspeedy);
 	return ;
 }
@@ -1770,7 +1770,7 @@ void CEventManager::MSG_4test(void* p)
 	pThis->_StateManager->_state->_ptz->getpos(pan,t,z);
 
 	printf(" get pos :  p,t,z = (%f,%f,%f)\n", pan,t,z);
-	
+
 	return ;
 }
 

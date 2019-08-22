@@ -8,7 +8,7 @@
 #ifndef PTZINTERFACE_HPP_
 #define PTZINTERFACE_HPP_
 
-const float UNVALID = 2.0;
+//const float UNVALID = 2.0;
 
 class CptzInterface
 {

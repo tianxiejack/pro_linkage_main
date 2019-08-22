@@ -320,6 +320,7 @@ private:
 
 	float HK_JosToSpeedX(int X);
 	float HK_JosToSpeedY(int Y);
+	float HK_JosToSpeedZ(int Z);
 
 };
 
