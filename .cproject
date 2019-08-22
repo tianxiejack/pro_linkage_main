@@ -39,16 +39,21 @@
 									<listOptionValue builtIn="false" value="../src/IPC"/>
 									<listOptionValue builtIn="false" value="/usr/local/include/libusb-1.0"/>
 								</option>
+								<option id="nvcc.compiler.def.symbols.1651712350" name="Defined symbols (-D)" superClass="nvcc.compiler.def.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WITH_OPENSSL"/>
+								</option>
 								<inputType id="nvcc.compiler.input.cu.700280120" superClass="nvcc.compiler.input.cu"/>
 								<inputType id="nvcc.compiler.input.cpp.836683492" superClass="nvcc.compiler.input.cpp"/>
 								<inputType id="nvcc.compiler.input.c.1961848311" superClass="nvcc.compiler.input.c"/>
 							</tool>
 							<tool id="nvcc.linker.base.483008244" name="NVCC Linker" superClass="nvcc.linker.base">
 								<option id="nvcc.linker.option.libs.1176333716" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="usb-1.0"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="opencv_core"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ipc_c"/>
+									<listOptionValue builtIn="false" value="opencv_core"/>
+									<listOptionValue builtIn="false" value="ipc_c"/>
+									<listOptionValue builtIn="false" value="usb-1.0"/>
+									<listOptionValue builtIn="false" value="cronvif"/>
 								</option>
+								<option id="nvcc.linker.option.paths.1908816317" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths"/>
 								<inputType id="nvcc.linker.input.831469910" superClass="nvcc.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -92,7 +97,7 @@
 						<toolChain id="com.nvidia.cuda.ide.toolchain.seven_five.exe.release.63534734" name="CUDA Toolkit 8.0" superClass="com.nvidia.cuda.ide.toolchain.seven_five.exe.release">
 							<targetPlatform archList="all" binaryParser="com.nvidia.cuda.ide.elf;com.nvidia.cuda.ide.macho;com.nvidia.cuda.ide.cubin" id="com.nvidia.cuda.ide.targetPlatform.1761790486" isAbstract="false" name="Debug Platform" osList="linux,macosx" superClass="com.nvidia.cuda.ide.targetPlatform"/>
 							<builder buildPath="${workspace_loc:/ctrl_process}/Release" id="com.nvidia.cuda.ide.builder.2032765815" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CUDA Toolkit 8.0 Builder" superClass="com.nvidia.cuda.ide.builder"/>
-							<tool id="nvcc.compiler.base.69329884" name="NVCC Compiler" superClass="nvcc.compiler.base">
+							<tool command="nvcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX} ${OUTPUT} ${INPUTS}" id="nvcc.compiler.base.69329884" name="NVCC Compiler" superClass="nvcc.compiler.base">
 								<option id="nvcc.compiler.deviceDebug.49807849" name="Generate device debug information (-G)" superClass="nvcc.compiler.deviceDebug"/>
 								<option id="nvcc.compiler.option.level.1524009074" name="Generate host debug information (-g)" superClass="nvcc.compiler.option.level"/>
 								<option defaultValue="nvcc.compiler.optimization.level.most" id="nvcc.compiler.optimization.level.330224717" name="Optimization Level" superClass="nvcc.compiler.optimization.level" valueType="enumerated"/>
@@ -109,19 +114,24 @@
 									<listOptionValue builtIn="false" value="../src/IPC"/>
 									<listOptionValue builtIn="false" value="/usr/local/include/libusb-1.0"/>
 								</option>
+								<option id="nvcc.compiler.def.symbols.489779262" name="Defined symbols (-D)" superClass="nvcc.compiler.def.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WITH_OPENSSL"/>
+								</option>
 								<inputType id="nvcc.compiler.input.cu.2065999090" superClass="nvcc.compiler.input.cu"/>
 								<inputType id="nvcc.compiler.input.cpp.10186106" superClass="nvcc.compiler.input.cpp"/>
 								<inputType id="nvcc.compiler.input.c.1076027880" superClass="nvcc.compiler.input.c"/>
 							</tool>
 							<tool id="nvcc.linker.base.1932752102" name="NVCC Linker" superClass="nvcc.linker.base">
 								<option id="nvcc.linker.option.libs.1330776537" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="usb-1.0"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="opencv_core"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ipc_c"/>
+									<listOptionValue builtIn="false" value="opencv_core"/>
+									<listOptionValue builtIn="false" value="ipc_c"/>
+									<listOptionValue builtIn="false" value="usb-1.0"/>
+									<listOptionValue builtIn="false" value="cronvif"/>
 								</option>
 								<option id="nvcc.linker.option.other.2073142315" name="Other options (-Xlinker [option])" superClass="nvcc.linker.option.other" valueType="stringList">
 									<listOptionValue builtIn="false" value="-rpath=/usr/lib/aarch64-linux-gnu/tegra"/>
 								</option>
+								<option id="nvcc.linker.option.paths.1123266585" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths"/>
 								<inputType id="nvcc.linker.input.746879831" superClass="nvcc.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -170,5 +180,12 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.nvidia.cuda.ide.build.NVCCPerProjectProfile"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/linkxxctrl"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/linkxxctrl"/>
+		</configuration>
+	</storageModule>
 </cproject>
