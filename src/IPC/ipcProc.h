@@ -24,6 +24,7 @@ public:
 	int IPCRecvGstMsg(void* prm);
 
 	GstRectParm_t m_gstRectParm;
+	IPC_ONVIF_POS m_setpos;
 private:
 	static CIPCProc* pThis;
 	pthread_mutex_t mutex;

@@ -39,11 +39,14 @@ typedef enum
 	focus,
 	exit_IrisAndFocus,
 	exit_img,
-
+	
 	read_shm_config,
 	read_shm_block,
 	read_shm_single,
 	read_shm_usrosd,
+	
+	querypos,
+	setPos,
 	
 }CMD_ID;
 
@@ -55,10 +58,12 @@ typedef enum
     IPC_IMG_SHA,
     IPC_USER_SHA,
     IPC_SEM,
-    IPC_GSTREAM_PTZ = 10, //attach to the gstreamer app of DAO
-    IPC_MAX
-}IPC_MTYPE;
+   
+    
+    IPC_GSTREAM_PTZ=10, //attach to the gstreamer app of DAO
+	IPC_MAX,
 
+}IPC_MTYPE;
 
 typedef enum
 {
@@ -102,6 +107,14 @@ typedef enum{
 	cursor_left,
 	cursor_right,
 }josDir;
+
+
+typedef struct
+{
+	float p;
+	float t;
+	float z;
+}IPC_ONVIF_POS;
 
 
 typedef struct
@@ -152,6 +165,13 @@ static void Ipc_init()
 	tmpIpc[IPC_SEM].IPCID = IPC_MAX;
 	tmpIpc[IPC_SEM].ptr = NULL;
 
+	memcpy(tmpIpc[IPC_GSTREAM_PTZ].name,tmp,sizeof(tmp));
+	tmpIpc[IPC_GSTREAM_PTZ].Identify = IPC_SEM;
+	tmpIpc[IPC_GSTREAM_PTZ].Class = IPC_Class_MSG;
+	tmpIpc[IPC_GSTREAM_PTZ].IPCID = IPC_MAX;
+	tmpIpc[IPC_GSTREAM_PTZ].length = 0;
+	tmpIpc[IPC_GSTREAM_PTZ].ptr = NULL;
+
 	return;
 }
 
@@ -171,4 +191,3 @@ static void *ipc_getSharedMem(IPC_MTYPE itype)
 #endif
 
 #endif /* IPC_CUSTOM_HEAD_HPP_ */
-

@@ -20,6 +20,7 @@ class CPTZ_ONVIF : public CptzInterface
 	public:  //interface
 
 		void getpos(float& pan, float& til,float& zoom);
+		void setpos(float& pan, float& til,float& zoom);
 		
 		void ptzStop();
 		

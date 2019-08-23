@@ -152,9 +152,14 @@ void *CEventManager::thread_ipcEvent(void *p)
 				break;
 
 			case CFGID_RTS_mtddet:	
-					pThis->_StateManager->_state->mtdhandle(pThis->cfg_value[CFGID_RTS_mtddet]);
+				pThis->_StateManager->_state->mtdhandle(pThis->cfg_value[CFGID_RTS_mtddet]);
 				break;
-
+			case IPC_EVENT_QUERYPOS:
+				pThis->_Msg->MSGDRIV_send(MSGID_COM_INPUT_QUERYPTZPOS, 0);
+				break;
+			case IPC_EVENT_SETPOS:
+				pThis->_Msg->MSGDRIV_send(MSGID_COM_INPUT_SETPOS, (void*)&pThis->m_ipc->m_setpos);			
+				break;
 			default:
 				break;
 		}
@@ -192,7 +197,8 @@ void CEventManager::MSG_register()
 	_Msg->MSGDRIV_register(MSGID_COM_INPUT_SETOSD, MSG_Com_SetOsd, NULL);
 	_Msg->MSGDRIV_register(MSGID_COM_INPUT_DEFAULTCFG, MSG_Com_DefaultCfg, NULL);
 	_Msg->MSGDRIV_register(MSGID_COM_INPUT_SAVECFG, MSG_Com_SaveCfg, NULL);
-
+	
+	_Msg->MSGDRIV_register(MSGID_COM_INPUT_SETPOS, MSG_setpos, NULL);
 	_Msg->MSGDRIV_register(MSGID_INPUT_TEST, MSG_4test, NULL);
 
 	return ;
@@ -1736,11 +1742,18 @@ void* CEventManager::answerPos(void *p)
 		return NULL;
 	exist = true;
 
+#if 0
 	ComParams_t *tmp = (ComParams_t *)p;
 	int pan ,til ;
 	pThis->_StateManager->_state->_ptz->queryPos();
 	pThis->_StateManager->_state->_ptz->getpos(pan, til);
 	pThis->signalFeedBack(4, tmp->comtype, ACK_QueryPos, pan, til);
+#else
+	IPC_ONVIF_POS tmp;
+	pThis->_StateManager->_state->_ptz->getpos(tmp.p,tmp.t,tmp.z);
+	pThis->m_ipc->IPCSendMsg(querypos, &tmp, sizeof(tmp));
+	printf("ptz = %f,%f,%f\n", tmp.p,tmp.t,tmp.z);
+#endif
 
 	exist = false;
 	return NULL;
@@ -1766,11 +1779,22 @@ void* CEventManager::answerZoom(void *p)
 
 void CEventManager::MSG_4test(void* p)
 {
-	float pan,t,z;
+	float pan = 0,t =0,z =0;
 	pThis->_StateManager->_state->_ptz->getpos(pan,t,z);
 
-	printf(" get pos :  p,t,z = (%f,%f,%f)\n", pan,t,z);
+	IPC_ONVIF_POS tmp;
+	tmp.p = pan; tmp.t = t;tmp.z = z;
+	pThis->m_ipc->IPCSendMsg(querypos, &tmp, sizeof(tmp));
 
+	printf("%s__LINE:%d get pos :  p,t,z = (%f,%f,%f)\n",__func__,__LINE__, pan,t,z);
 	return ;
 }
+
+void CEventManager::MSG_setpos(void* p)
+{
+	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;
+	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pos->z);
+	return ;
+}
+
 

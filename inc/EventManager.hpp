@@ -42,6 +42,7 @@ private:
 	comtype_t outcomtype;
 	void IPC_Creat();
 	void MSG_register();
+	
 
 private:
 	static void MSG_Trk(void* p);
@@ -73,7 +74,9 @@ private:
 	static void MSG_Com_SetOsd(void* p);
 	static void MSG_Com_DefaultCfg(void* p);
 	static void MSG_Com_SaveCfg(void* p);
+
 	
+	static void MSG_setpos(void* p);
 	static void MSG_4test(void* p);
 
 	int  ReadConfigFile();

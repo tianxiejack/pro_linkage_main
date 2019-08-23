@@ -125,6 +125,7 @@ typedef enum _sys_msg_id_ {
 	MSGID_COM_INPUT_SETOSD,
 	MSGID_COM_INPUT_DEFAULTCFG,
 	MSGID_COM_INPUT_SAVECFG,
+	MSGID_COM_INPUT_SETPOS,
 
 	MSGID_INPUT_TEST,
     	MAX_MSG_NUM
@@ -225,6 +226,9 @@ typedef struct{
 	float linkspeedx;
 	float linkspeedy;
 	float linkspeedz;
+	float linkposp;
+	float linkpost;
+	float linkposz;
 }ComParams_t;
 
 typedef struct{

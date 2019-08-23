@@ -26,11 +26,10 @@ int CIPCProc::IPCSendMsg(CMD_ID cmd, void* prm, int len)
 	sendData.cmd_ID = cmd;
 	if(len > 0)
 		memcpy(sendData.param, prm, len);
-
+	
 	pthread_mutex_lock(&mutex);
 	ipc_sendmsg(IPC_TOIMG_MSG ,&sendData);
 	pthread_mutex_unlock(&mutex);
-
 	return 0;
 }
 
@@ -64,7 +63,8 @@ int CIPCProc::IPCRecvMsg(void* prm)
 {
 	SENDST recvData;
 	IPC_PRM_INT *pIn = (IPC_PRM_INT *)&recvData.param;
-	ipc_recvmsg(IPC_FRIMG_MSG,&recvData);
+	int result = ipc_recvmsg(IPC_FRIMG_MSG,&recvData);
+	printf("result = %d,recvData.cmd_ID  =%d \n",result,recvData.cmd_ID);
 	switch(recvData.cmd_ID)
 	{
 		case read_shm_block:
@@ -90,8 +90,14 @@ int CIPCProc::IPCRecvMsg(void* prm)
 					return (CFGID_RTS_mtddet);
 			}		
 			break;
-		
+		case querypos:
+			return IPC_EVENT_QUERYPOS;
+			break;
 
+		case setPos:
+			memcpy(&m_setpos,recvData.param,sizeof(m_setpos));
+			return IPC_EVENT_SETPOS;
+			break;
 		default:
 			break;
 	}

@@ -39,6 +39,7 @@ public:
 
 		virtual void setPltSpeed(float p,float t,float z){};
 		virtual void getpos(float& pan, float& til,float& zoom){};
+		virtual void setpos(float& pan, float& til,float& zoom){};
 };
 
 #endif /* PTZINTERFACE_HPP_ */

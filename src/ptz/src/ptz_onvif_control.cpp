@@ -7,6 +7,9 @@
 
 #include "ptz_onvif_control.hpp"
 #include <stdio.h>
+
+const float NOCHANGE = 2.0;
+
 CPTZ_ONVIF::CPTZ_ONVIF()
 {
 	m_onvifHanle = IOnvif::getinstance();
@@ -30,6 +33,12 @@ void CPTZ_ONVIF::setPltSpeed(float p,float t,float z)
 void CPTZ_ONVIF::getpos(float& pan, float& til,float& zoom)
 {
 	m_onvifHanle->getPtzStatus(pan, til, zoom);
+}
+
+
+void CPTZ_ONVIF::setpos(float& pan, float& til,float& zoom)
+{
+	m_onvifHanle->absoluteMove(pan, til, zoom, NOCHANGE,NOCHANGE,NOCHANGE);
 }
 
 

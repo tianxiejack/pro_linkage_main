@@ -59,6 +59,14 @@ static int ShowDPI[MAX_CHAN][2] = {{1920, 1080},{1920, 1080},{1920, 1080},{1920,
 #define CFGID_blkId( cfgId )            ( ( (cfgId) >> 4 ) & 0xFF )
 #define CFGID_feildId( cfgId )          ( cfgId & 0xF )
 
+
+typedef enum 
+{
+	IPC_EVENT_QUERYPOS = 5000,
+	IPC_EVENT_SETPOS,
+	IPC_EVENT_MAX
+}IPC_EVENT;
+
 typedef enum 
 {
 	CFGID_JOS_BKID = 0,
