@@ -111,6 +111,9 @@ public:
 	OSA_ThrHndl ipcGstEvent_thid;
 	Trkerr_t m_pixelErr;
 	SELF_SemHndl m_semSendpos,m_semSendZoom;
+
+private:
+	IPC_ONVIF_POS m_curpos;
 };
 
 

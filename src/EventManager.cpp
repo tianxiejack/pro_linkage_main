@@ -1792,7 +1792,14 @@ void CEventManager::MSG_4test(void* p)
 
 void CEventManager::MSG_setpos(void* p)
 {
-	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;
+	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;	
+	pThis->_StateManager->_state->_ptz->getpos(m_curpos.p,m_curpos.t,m_curpos.z);
+	if(pos->p > 1.0)
+		pos->p = m_curpos.p;
+	if(pos->t > 1.0)
+		pos->t = m_curpos.t;
+	if(pos->z > 1.0)
+		pos->z = m_curpos.z;
 	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pos->z);
 	return ;
 }
