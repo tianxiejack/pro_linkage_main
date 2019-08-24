@@ -1,0 +1,11 @@
+%YAML:1.0
+cfg_gun_num:1
+cfg_gun_ip_1:"192.168.0.66"
+cfg_gun_name_1:"admin"
+cfg_gun_password_1:"admin$2018"
+cfg_ball_num: 1
+cfg_ball_ip_1: "192.168.0.64"
+cfg_ball_name_1:"admin"
+cfg_ball_password_1:"admin$2018"
+cfg_ball_onvif_name_1:"onvif"
+cfg_ball_onvif_password_1:"12345qwert"
