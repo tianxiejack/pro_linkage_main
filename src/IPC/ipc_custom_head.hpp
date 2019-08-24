@@ -108,14 +108,12 @@ typedef enum{
 	cursor_right,
 }josDir;
 
-
 typedef struct
 {
 	float p;
 	float t;
 	float z;
 }IPC_ONVIF_POS;
-
 
 typedef struct
 {

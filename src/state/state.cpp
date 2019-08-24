@@ -30,17 +30,6 @@ State::State()
 {
 	if(pThis == NULL)
 		pThis = this;
-	if(_agreement == NULL)
-		_agreement = new IPelcoDFormat();
-	if(_ptz == NULL)
-	{
-		//_ptz = new CPTZControl(_agreement,notifyzoomchange);
-		_ptz = new CPTZ_ONVIF();
-	}
-	if(m_Platform == NULL)
-		m_Platform = new CplatFormControl();
-	if(m_ptzSpeed == NULL)
-		m_ptzSpeed = new CPTZSpeedTransfer();
 	if(m_ipc == NULL)
 		m_ipc = new CIPCProc();
 	if(m_timer == NULL)
@@ -109,6 +98,18 @@ void* State::zoomServer(void* p)
 
 void State::StateInit()
 {
+	if(_agreement == NULL)
+		_agreement = new IPelcoDFormat();
+	if(_ptz == NULL)
+	{
+		//_ptz = new CPTZControl(_agreement,notifyzoomchange);
+		_ptz = new CPTZ_ONVIF(m_ball_ip.c_str(),m_ball_onvif_name.c_str(),m_ball_onvif_pswd.c_str());
+	}
+	if(m_Platform == NULL)
+		m_Platform = new CplatFormControl();
+	if(m_ptzSpeed == NULL)
+		m_ptzSpeed = new CPTZSpeedTransfer();
+	
 	if(m_st1 == NULL)
 		m_st1 = new StateAuto_Mtd();
 	if(m_st2 == NULL)

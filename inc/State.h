@@ -108,6 +108,13 @@ private:
 	static State *m_st1, *m_st2, *m_st3, *m_st4, *m_st5;
 	static OSA_ThrHndl m_thrZoomServer;
 	static bool exitThreadZoomserver;
+
+public:
+	string m_ball_ip;
+	string m_ball_username;
+	string m_ball_password;
+	string m_ball_onvif_name;
+	string m_ball_onvif_pswd;
 };
 
 

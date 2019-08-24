@@ -14,17 +14,16 @@
 class CPTZ_ONVIF : public CptzInterface
 {
 	public:
-		CPTZ_ONVIF();
+		CPTZ_ONVIF(const char* ip,const char* username,const char* password);
 		virtual ~CPTZ_ONVIF();
 	
 	public:  //interface
 
 		void getpos(float& pan, float& til,float& zoom);
 		void setpos(float& pan, float& til,float& zoom);
-		
+		void setPltSpeed(float p,float t,float z);
 		void ptzStop();
 		
-		void setPltSpeed(float p,float t,float z);
 
 	private:
 		IOnvif* m_onvifHanle;

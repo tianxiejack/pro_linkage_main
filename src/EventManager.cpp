@@ -25,6 +25,7 @@ CEventManager::CEventManager()
 	MSG_register();
 	m_ipc = (CIPCProc*)_StateManager->returnIpc();
 	IPC_Creat();
+	ReadOnvifConfigFile();
 	ReadConfigFile();
 	_StateManager->GetParams(cfg_value);
 	outtype = cfg_value[CFGID_PTZ_feedbacktype];
@@ -680,6 +681,57 @@ int  CEventManager::ReadConfigFile()
 	m_ipc->IPCSendMsg(read_shm_config, NULL, 0);
 	return 0;
 }
+
+
+int  CEventManager::ReadOnvifConfigFile()
+{	
+	string cfgAvtFile;
+	char cfg_avt[30] = "cfg_";
+	cfgAvtFile = "onvif.yml";
+	FILE *fp = fopen(cfgAvtFile.c_str(), "rt");
+
+	if(fp != NULL){
+		fseek(fp, 0, SEEK_END);
+		int len = ftell(fp);
+		fclose(fp);
+		if(len < 10)
+			return  -1;
+		else
+		{
+			FileStorage fr(cfgAvtFile, FileStorage::READ);
+			if(fr.isOpened())
+			{
+				sprintf(cfg_avt, "cfg_gun_ip_1");
+				m_gun_ip = (string)fr[cfg_avt];
+				sprintf(cfg_avt, "cfg_gun_name_1");
+				m_gun_username = (string)fr[cfg_avt];
+				sprintf(cfg_avt, "cfg_gun_password_1");
+				m_gun_password= (string)fr[cfg_avt];
+				sprintf(cfg_avt, "cfg_ball_ip_1");
+				_StateManager->_state->m_ball_ip = (string)fr[cfg_avt];
+				sprintf(cfg_avt, "cfg_ball_name_1");
+				_StateManager->_state->m_ball_username = (string)fr[cfg_avt];
+				sprintf(cfg_avt, "cfg_ball_onvif_name_1");
+				_StateManager->_state->m_ball_onvif_name = (string)fr[cfg_avt];
+				sprintf(cfg_avt, "cfg_ball_onvif_password_1");
+				_StateManager->_state->m_ball_onvif_pswd = (string)fr[cfg_avt];
+	
+			}
+			else
+			{
+				printf("[get params]open YML failed\n");
+				exit(-1);
+			}
+		}
+	}
+	else
+	{
+		printf("[get params] Can not find YML. Please put this file into the folder of execute file\n");
+		exit (-1);
+	}
+	return 0;
+}
+
 
 int CEventManager::SetConfig(comtype_t comtype, int block, int field, int value,char *inBuf)
 {

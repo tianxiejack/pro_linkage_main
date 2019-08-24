@@ -10,9 +10,14 @@
 
 const float NOCHANGE = 2.0;
 
-CPTZ_ONVIF::CPTZ_ONVIF()
+CPTZ_ONVIF::CPTZ_ONVIF(const char* ip,const char* username,const char* password)
 {
-	m_onvifHanle = IOnvif::getinstance();
+	printf("*********onvif**************\n\n");
+	printf("*** ip : %s  \n",ip);
+	printf("*** username : %s  \n",username);
+	printf("*** password : %s  \n",password);
+	
+	m_onvifHanle = IOnvif::getinstance(ip,username,password);
 }
 
 CPTZ_ONVIF::~CPTZ_ONVIF()

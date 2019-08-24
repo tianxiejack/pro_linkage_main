@@ -93,6 +93,7 @@ private:
 	string intip2string(unsigned int intip);
 	unsigned int stringip2int(string str);
 	vector<string> csplit(const string& str, const string& delim);
+	int  ReadOnvifConfigFile();
 
 public:
 	static void* answerPos(void* p);
@@ -114,6 +115,10 @@ public:
 
 private:
 	IPC_ONVIF_POS m_curpos;
+	
+	string m_gun_ip;
+	string m_gun_username;
+	string m_gun_password;
 };
 
 
