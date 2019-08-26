@@ -24,10 +24,9 @@ using namespace std;
 #define POV_BUTTON 5
 #define BUTTON 6
 
-#define    RECV_BUF_SIZE   1024
-#define  TIME_FOR_THREAD_END 3
-#define MAXSENDSIZE 136
-
+#define  	RECV_BUF_SIZE   	1024
+#define  	TIME_FOR_THREAD_END 3
+#define 	MAXSENDSIZE 		136
 
 typedef enum
 {
@@ -315,6 +314,7 @@ private:
 	vector<unsigned char>  rcvBufQue;
 	vector<CConnectVECTOR *>  connetVector;
 	OSA_MutexHndl mutexConn;
+	CtrlParams_t m_josParams;
 
 private:
 	void parsingJostickPovData(unsigned char* jos_data);
@@ -327,7 +327,6 @@ private:
 	float HK_JosToSpeedX(int X);
 	float HK_JosToSpeedY(int Y);
 	float HK_JosToSpeedZ(int Z);
-	CtrlParams_t m_josParams;
 
 };
 

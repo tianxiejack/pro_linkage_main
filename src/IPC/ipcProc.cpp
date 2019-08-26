@@ -98,6 +98,10 @@ int CIPCProc::IPCRecvMsg(void* prm)
 			memcpy(&m_setpos,recvData.param,sizeof(m_setpos));
 			return IPC_EVENT_SETPOS;
 			break;
+		case josctrl:
+			memcpy(&m_ctrlprm.menu,recvData.param,sizeof(int));
+			return IPC_EVENT_MENUSTAT;
+			break;
 		default:
 			break;
 	}

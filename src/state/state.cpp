@@ -351,7 +351,15 @@ void State::axisMove_interface(float x, float y)
 
 void State::axisMove_interface(float p, float t,float z)
 {	
-	_ptz->setPltSpeed(p,t,z);
+	if(!m_ipc->m_ctrlprm.menu)
+		_ptz->setPltSpeed(p,t,z);
+	else
+	{
+		if(t > 0.99)
+			sendJosDir2sub(cursor_up);
+		else if(t < -0.99)
+			sendJosDir2sub(cursor_down);
+	}
 	return ;
 }
 
@@ -473,5 +481,17 @@ void State::notifyzoomchange(int zoom)
 	pThis->ipcParam.intPrm[1] = pos.y;
 	//pThis->m_ipc->IPCSendMsg(BoresightPos, pThis->ipcParam.intPrm, 4*2);
 	pThis->m_Platform->updateFov(cfg_value , m_plt , zoom);
+	return;
+}
+
+
+void State::sendJosDir2sub(int dir)
+{
+	CtrlParams_t prm;
+	prm.type = jos_Dir;
+	prm.jos_Dir = dir;
+	
+	m_ipc->IPCSendMsg(josctrl, &prm, sizeof(CtrlParams_t));
+
 	return;
 }

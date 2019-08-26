@@ -25,6 +25,8 @@ public:
 
 	GstRectParm_t m_gstRectParm;
 	IPC_ONVIF_POS m_setpos;
+	CtrlParams_t m_ctrlprm;
+	
 private:
 	static CIPCProc* pThis;
 	pthread_mutex_t mutex;

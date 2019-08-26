@@ -161,6 +161,8 @@ void *CEventManager::thread_ipcEvent(void *p)
 			case IPC_EVENT_SETPOS:
 				pThis->_Msg->MSGDRIV_send(MSGID_COM_INPUT_SETPOS, (void*)&pThis->m_ipc->m_setpos);			
 				break;
+			case IPC_EVENT_MENUSTAT:
+				break;
 			default:
 				break;
 		}
@@ -316,10 +318,10 @@ void CEventManager::MSG_WorkMode(void* p)
 
 void CEventManager::MSG_JosPos(void* p)
 {
-	int dir;
 	ComParams_t* tmp = (ComParams_t *)p;
 	
-	pThis->_StateManager->inter_AxisMove(tmp->platspeedx, tmp->platspeedy);
+	pThis->_StateManager->_state->axisMove_interface(tmp->linkspeedx, tmp->linkspeedy,tmp->linkspeedz);
+
 	return ;
 }
 

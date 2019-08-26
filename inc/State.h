@@ -91,6 +91,7 @@ public:
 	void getcurRate(float& curx , float& cury);
 	static void notifyzoomchange(int zoom);
 	static void* zoomServer(void* p);
+	void sendJosDir2sub(int dir);
 	
 public:
 	static CIPCProc* m_ipc;

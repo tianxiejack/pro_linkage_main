@@ -14,7 +14,7 @@
 #include "configtable.h"
 
 #include "osa_sem.h"
-//#include "ipc_custom_head.hpp"
+#include "ipc_custom_head.h"
 
 
 using namespace std;

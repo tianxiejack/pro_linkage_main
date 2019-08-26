@@ -51,7 +51,6 @@ typedef enum
 	
 }CMD_ID;
 
-
 typedef enum 
 {
     IPC_TOIMG_MSG = 0,  // SERVER TO CLIENT

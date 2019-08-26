@@ -35,9 +35,6 @@ CEventParsing::CEventParsing()
 	OSA_mutexCreate(&mutexConn);
 	pCom2 = PortFactory::createProduct(2);
 	pCom2->copen();
-	memset(&m_josParams,0,sizeof(m_josParams));	
-	m_josParams.workMode = 1;
-	m_josParams.ctrlMode = 1;
 }
 
 CEventParsing::~CEventParsing()
@@ -934,7 +931,6 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 
 				m_josParams.jos_button = button1;
 				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
-					
 				break;
 			case hk_button_2:			
 				m_josParams.jos_button = button2;
@@ -1006,8 +1002,8 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 						break;
 				}				
 				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_workModeSwitch,(void*)&m_josParams);
+				break;	
 				
-				break;			
 			case hk_button_f2:
 				m_josParams.jos_button = buttonF2;
 				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
