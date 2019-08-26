@@ -51,6 +51,7 @@ typedef enum
 	
 }CMD_ID;
 
+
 typedef enum 
 {
     IPC_TOIMG_MSG = 0,  // SERVER TO CLIENT
@@ -116,15 +117,15 @@ typedef struct{
 	int mouse_state;	//down:1  up:2
 	int enter;	//0,1
 	int menu;	//0,1
-	int workMode;	//0~2  0:manuallink 1:autolink 2:ballctrl
+	int workMode;	//1~3
 	int ctrlMode;	//1,2
 }CtrlParams_t;
 
 typedef enum{
-	manual_linkage = 1,
+	manual_linkage = 0,
 	Auto_linkage,
 	ballctrl
-}work_Mode;
+}Work_Mode_t;
 
 typedef enum{
 	jos = 1,
