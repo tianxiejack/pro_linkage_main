@@ -35,7 +35,9 @@ CEventParsing::CEventParsing()
 	OSA_mutexCreate(&mutexConn);
 	pCom2 = PortFactory::createProduct(2);
 	pCom2->copen();
-
+	memset(&m_josParams,0,sizeof(m_josParams));	
+	m_josParams.workMode = 1;
+	m_josParams.ctrlMode = 1;
 }
 
 CEventParsing::~CEventParsing()
@@ -924,33 +926,43 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 	
 	if(jos_data[usb_1_8] != HKButton)
 	{
+		m_josParams.type = jos_button;
 		switch(jos_data[usb_1_8])
 		{
 			case hk_button_1:
-				printf("button 1\n");
 				_Msg->MSGDRIV_send(MSGID_INPUT_TEST, 0);
-				
+
+				m_josParams.jos_button = button1;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
+					
 				break;
-			case hk_button_2:
-				printf("button 2\n");
+			case hk_button_2:			
+				m_josParams.jos_button = button2;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_3:
-				printf("button 3\n");
+				m_josParams.jos_button = button3;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_4:
-				printf("button 4\n");
+				m_josParams.jos_button = button4;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_5:
-				printf("button 5\n");
+				m_josParams.jos_button = button5;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_6:
-				printf("button 6\n");
+				m_josParams.jos_button = button6;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;			
 			case hk_button_7:
-				printf("button 7\n");
+				m_josParams.jos_button = button7;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_8:
-				printf("button 8\n");
+				m_josParams.jos_button = button8;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			default:
 				break;
@@ -959,28 +971,58 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 	
 	if(jos_data[usb_special] != HKButtonSpe)
 	{
+		m_josParams.type = jos_button;
 		switch(jos_data[usb_special])
 		{
 			case hk_button_9:
-				printf("button 9\n");
+				m_josParams.jos_button = button9;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_0:
-				printf("button 0\n");
+				m_josParams.jos_button = button0;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_f1:
-				printf("button f1\n");
+				//m_josParams.jos_button = buttonF1;
+				//_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);	
+
+				m_josParams.workMode = (m_josParams.workMode + 1)%3;
+				switch(m_josParams.workMode)
+				{
+					case 0:
+						m_josParams.workMode = manual_linkage;
+						m_josParams.ctrlMode = mouse;
+						break;
+					case 1:
+						m_josParams.workMode = Auto_linkage;
+						m_josParams.ctrlMode = jos;
+						break;
+					case 2:
+						m_josParams.workMode = ballctrl;
+						if(m_josParams.menu == true)
+							m_josParams.ctrlMode = mouse;
+						else
+							m_josParams.ctrlMode = jos;
+						break;
+				}				
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_workModeSwitch,(void*)&m_josParams);
+				
 				break;			
 			case hk_button_f2:
-				printf("button f2\n");
+				m_josParams.jos_button = buttonF2;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;				
 			case hk_button_f3:
-				printf("button f3\n");
+				m_josParams.jos_button = buttonF3;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_left:
-				printf("button left\n");
+				//m_josParams.jos_button = buttonLeft;
+				//_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;		
 			case hk_button_right:
-				printf("button right\n");
+				//m_josParams.jos_button = buttonRigth;
+				//_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;	
 			default:
 				break;
@@ -988,10 +1030,12 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 	}
 
 	if(jos_data[usb_enter] != HKButtonEnter)
-	{
+	{	
+		m_josParams.type = jos_button;
 		if(jos_data[usb_enter] == 1)
 		{
-			printf("enter !!\n");
+			m_josParams.jos_button = buttonEnter;
+			_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 		}
 	}
 	

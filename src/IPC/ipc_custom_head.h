@@ -47,6 +47,7 @@ typedef enum
 	
 	querypos,
 	setPos,
+	josctrl,
 	
 }CMD_ID;
 
@@ -83,6 +84,42 @@ typedef enum
 	workMode,
 	ctrlMode
 }josType;
+
+
+typedef enum
+{
+	button0 = 0,
+	button1,
+	button2,
+	button3,
+	button4,
+	button5,
+	button6,
+	button7,
+	button8,
+	button9,
+	buttonF1,
+	buttonF2,
+	buttonF3,
+	buttonEnter,
+	buttonLeft,
+	buttonRigth,
+}JosHKButton_t;
+
+
+typedef struct{
+	int type;
+	int cursor_x;  //0~1920
+	int cursor_y;	//0~1080
+	int jos_button;	//0~9
+	int jos_Dir;	//up down left right
+	int mouse_button;	//left button --- right button
+	int mouse_state;	//down:1  up:2
+	int enter;	//0,1
+	int menu;	//0,1
+	int workMode;	//0~2  0:manuallink 1:autolink 2:ballctrl
+	int ctrlMode;	//1,2
+}CtrlParams_t;
 
 typedef enum{
 	manual_linkage = 1,

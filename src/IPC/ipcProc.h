@@ -2,7 +2,7 @@
 #define _IPCPROC_H_
 
 #include "osa_thr.h"
-#include "ipc_custom_head.hpp"
+#include "ipc_custom_head.h"
 #include <string>
 #pragma once
 using namespace std;

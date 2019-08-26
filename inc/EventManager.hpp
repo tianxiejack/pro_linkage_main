@@ -75,9 +75,11 @@ private:
 	static void MSG_Com_DefaultCfg(void* p);
 	static void MSG_Com_SaveCfg(void* p);
 
-	
 	static void MSG_setpos(void* p);
 	static void MSG_4test(void* p);
+	static void MSG_INPUT_CTRLPARAMS(void* p);
+	static void MSG_WORKMODEWITCH(void* p);
+
 
 	int  ReadConfigFile();
 	int SetConfig(comtype_t comtype, int block, int field, int value,char *inBuf);
@@ -115,7 +117,6 @@ public:
 
 private:
 	IPC_ONVIF_POS m_curpos;
-	
 	string m_gun_ip;
 	string m_gun_username;
 	string m_gun_password;

@@ -15,6 +15,7 @@
 #include  "osa_thr.h"
 #include "osa_mutex.h"
 #include "configtable.h"
+#include "ipc_custom_head.h"
 
 using namespace std;
 
@@ -126,9 +127,10 @@ typedef enum _sys_msg_id_ {
 	MSGID_COM_INPUT_DEFAULTCFG,
 	MSGID_COM_INPUT_SAVECFG,
 	MSGID_COM_INPUT_SETPOS,
-
+	MSGID_IPC_INPUT_CTRLPARAMS,
+	MSGID_IPC_INPUT_workModeSwitch,
 	MSGID_INPUT_TEST,
-    	MAX_MSG_NUM
+    MAX_MSG_NUM
 }MSG_PROC_ID;
 
 
@@ -325,6 +327,7 @@ private:
 	float HK_JosToSpeedX(int X);
 	float HK_JosToSpeedY(int Y);
 	float HK_JosToSpeedZ(int Z);
+	CtrlParams_t m_josParams;
 
 };
 

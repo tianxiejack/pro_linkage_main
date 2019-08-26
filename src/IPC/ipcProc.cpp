@@ -17,7 +17,7 @@ CIPCProc::~CIPCProc()
 }
 
 int CIPCProc::IPCSendMsg(CMD_ID cmd, void* prm, int len)
-{
+{	
 	if(len >= PARAMLEN || (prm == NULL && len > 0))
 		return -1;
 
