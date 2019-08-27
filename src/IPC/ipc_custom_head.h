@@ -124,7 +124,8 @@ typedef struct{
 typedef enum{
 	manual_linkage = 0,
 	Auto_linkage,
-	ballctrl
+	ballctrl,
+	calibmode
 }Work_Mode_t;
 
 typedef enum{
