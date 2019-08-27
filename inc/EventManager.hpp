@@ -78,7 +78,6 @@ private:
 	static void MSG_setpos(void* p);
 	static void MSG_4test(void* p);
 	static void MSG_INPUT_CTRLPARAMS(void* p);
-	static void MSG_WORKMODEWITCH(void* p);
 
 
 	int  ReadConfigFile();

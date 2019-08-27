@@ -979,29 +979,8 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_f1:
-				//m_josParams.jos_button = buttonF1;
-				//_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);	
-
-				m_josParams.workMode = (m_josParams.workMode + 1)%3;
-				switch(m_josParams.workMode)
-				{
-					case 0:
-						m_josParams.workMode = manual_linkage;
-						m_josParams.ctrlMode = mouse;
-						break;
-					case 1:
-						m_josParams.workMode = Auto_linkage;
-						m_josParams.ctrlMode = jos;
-						break;
-					case 2:
-						m_josParams.workMode = ballctrl;
-						if(m_josParams.menu == true)
-							m_josParams.ctrlMode = mouse;
-						else
-							m_josParams.ctrlMode = jos;
-						break;
-				}				
-				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_workModeSwitch,(void*)&m_josParams);
+				m_josParams.jos_button = buttonF1;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);	
 				break;	
 				
 			case hk_button_f2:

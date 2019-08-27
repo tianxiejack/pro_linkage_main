@@ -11,6 +11,7 @@ CIPCProc* CIPCProc::pThis = 0;
 CIPCProc::CIPCProc()
 {
 	pthread_mutex_init(&mutex,NULL);
+	memset(&m_ctrlprm,0,sizeof(CtrlParams_t));
 }
 CIPCProc::~CIPCProc()
 {

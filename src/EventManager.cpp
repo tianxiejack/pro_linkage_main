@@ -203,7 +203,6 @@ void CEventManager::MSG_register()
 	_Msg->MSGDRIV_register(MSGID_INPUT_TEST, MSG_4test, NULL);
 	
 	_Msg->MSGDRIV_register(MSGID_IPC_INPUT_CTRLPARAMS, MSG_INPUT_CTRLPARAMS, NULL);
-	_Msg->MSGDRIV_register(MSGID_IPC_INPUT_workModeSwitch, MSG_WORKMODEWITCH, NULL);
 
 	return ;
 }
@@ -1863,36 +1862,6 @@ void CEventManager::MSG_INPUT_CTRLPARAMS(void* p)
 	CtrlParams_t* josParam = (CtrlParams_t*)p;
 	pThis->m_ipc->IPCSendMsg(josctrl, josParam, sizeof(CtrlParams_t));
 	return;	
-}
-
-
-void CEventManager::MSG_WORKMODEWITCH(void* p)
-{
-	CtrlParams_t* pCtl = (CtrlParams_t*)p;
-
-	switch(pCtl->workMode)
-	{
-		case 0x01:
-			pCtl->workMode = manual_linkage;
-			pCtl->ctrlMode = mouse;
-			break;
-		case 0x02:
-			pCtl->workMode = Auto_linkage;
-			pCtl->ctrlMode = jos;
-			break;
-		case 0x03:
-			pCtl->workMode = ballctrl;
-			if(pCtl->menu == true)
-				pCtl->ctrlMode = mouse;
-			else
-				pCtl->ctrlMode = jos;
-			break;
-	}
-	pCtl->type = workMode;
-
-
-
-	return;
 }
 
 
