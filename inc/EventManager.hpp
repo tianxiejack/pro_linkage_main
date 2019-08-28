@@ -78,6 +78,9 @@ private:
 	static void MSG_setpos(void* p);
 	static void MSG_4test(void* p);
 	static void MSG_INPUT_CTRLPARAMS(void* p);
+	static void MSG_INPUT_STOP(void* p);
+	static void MSG_INPUT_LINKSETSPEED(void* p);
+
 
 
 	int  ReadConfigFile();
@@ -102,6 +105,9 @@ public:
 	static void* setPlatAngle(void* p);
 	static void* preposHandle(void* p);
 	static void* setZoom(void* p);
+	static void* thrPtzstop(void* p);
+	static void* thrPtzsetpos(void* p);
+	static void* thrPtzsetspeed(void* p);
 
 	int getBaseAddress(int* data);
 	bool isRelation2fov(int block , int field);

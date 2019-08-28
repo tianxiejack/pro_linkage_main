@@ -87,7 +87,7 @@ void* State::zoomServer(void* p)
 	struct timeval timval;	
 	while(exitThreadZoomserver == false)
 	{
-		pThis->_ptz->simpleQueryZoom();
+		pThis->_ptz->getpos(m_curpos.p,m_curpos.t,m_curpos.z);
 		timval.tv_sec = 0;
 		timval.tv_usec = 50*1000;
 		select(0, NULL, NULL, NULL, &timval);	
@@ -125,7 +125,7 @@ void State::StateInit()
 	_ptz->setMtdMonitorP(cfg_value[CFGID_PREPOS_preposx]);
 	_ptz->setMtdMonitorT(cfg_value[CFGID_PREPOS_preposy]);
 	_ptz->setMtdMonitorZ(cfg_value[CFGID_PREPOS_prezoom]);
-	
+
 	OSA_thrCreate(&m_thrZoomServer, zoomServer, 0, 0, 0);
 	return ;
 }

@@ -7,6 +7,7 @@
 
 #include "ptz_onvif_control.hpp"
 #include <stdio.h>
+#include "osa.h"
 
 const float NOCHANGE = 2.0;
 
@@ -31,7 +32,9 @@ void CPTZ_ONVIF::ptzStop()
 
 void CPTZ_ONVIF::setPltSpeed(float p,float t,float z)
 {
+	unsigned int t1 = OSA_getCurTimeInMsec();
 	m_onvifHanle->continuesMove(p, t, z);
+	printf("elasep time : %u \n" ,OSA_getCurTimeInMsec()-t1 );
 }
 
 

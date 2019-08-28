@@ -64,8 +64,8 @@ int CIPCProc::IPCRecvMsg(void* prm)
 {
 	SENDST recvData;
 	IPC_PRM_INT *pIn = (IPC_PRM_INT *)&recvData.param;
-	int result = ipc_recvmsg(IPC_FRIMG_MSG,&recvData);
-	printf("result = %d,recvData.cmd_ID  =%d \n",result,recvData.cmd_ID);
+	ipc_recvmsg(IPC_FRIMG_MSG,&recvData);
+	//printf("cmd_id =%d \n ",recvData.cmd_ID);
 	switch(recvData.cmd_ID)
 	{
 		case read_shm_block:
@@ -94,9 +94,11 @@ int CIPCProc::IPCRecvMsg(void* prm)
 		case querypos:
 			return IPC_EVENT_QUERYPOS;
 			break;
-
+		case ballstop:
+			return IPC_EVENT_STOP;
+			break;
 		case setPos:
-			memcpy(&m_setpos,recvData.param,sizeof(m_setpos));
+			memcpy(&m_setpos,recvData.param,sizeof(IPC_ONVIF_POS));
 			return IPC_EVENT_SETPOS;
 			break;
 		case josctrl:
@@ -104,7 +106,11 @@ int CIPCProc::IPCRecvMsg(void* prm)
 			break;
 		case workmode:
 			memcpy(&m_ctrlprm.workMode,recvData.param,sizeof(int));
-			break;			
+			break;	
+		case setSpeed:	
+			memcpy(&m_setspeed,recvData.param,sizeof(IPC_ONVIF_POS));
+			return IPC_EVENT_SETSPEED;
+			break;
 		default:
 			break;
 	}

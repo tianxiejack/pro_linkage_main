@@ -161,6 +161,12 @@ void *CEventManager::thread_ipcEvent(void *p)
 			case IPC_EVENT_SETPOS:
 				pThis->_Msg->MSGDRIV_send(MSGID_COM_INPUT_SETPOS, (void*)&pThis->m_ipc->m_setpos);			
 				break;
+			case IPC_EVENT_STOP:
+				pThis->_Msg->MSGDRIV_send(MSGID_COM_INPUT_STOP, (void*)&pThis->m_ipc->m_setpos);			
+				break;
+			case IPC_EVENT_SETSPEED:
+				pThis->_Msg->MSGDRIV_send(MSGID_COM_INPUT_LINKSPEED, (void*)&pThis->m_ipc->m_setspeed);	
+				break;
 			default:
 				break;
 		}
@@ -203,6 +209,9 @@ void CEventManager::MSG_register()
 	_Msg->MSGDRIV_register(MSGID_INPUT_TEST, MSG_4test, NULL);
 	
 	_Msg->MSGDRIV_register(MSGID_IPC_INPUT_CTRLPARAMS, MSG_INPUT_CTRLPARAMS, NULL);
+	_Msg->MSGDRIV_register(MSGID_COM_INPUT_STOP, MSG_INPUT_STOP, NULL);
+	
+	_Msg->MSGDRIV_register(MSGID_COM_INPUT_LINKSPEED, MSG_INPUT_LINKSETSPEED, NULL);
 
 	return ;
 }
@@ -512,6 +521,9 @@ void CEventManager::MSG_Com_QueryPtzPos(void* p)
 {
 	OSA_ThrHndl tmpHandle;
 	OSA_thrCreate(&tmpHandle, answerPos, 0, 0, p);
+	
+	//pThis->m_ipc->IPCSendMsg(querypos, &tmp, sizeof(tmp));
+
 	return ;
 }
 
@@ -1805,7 +1817,7 @@ void* CEventManager::answerPos(void *p)
 	IPC_ONVIF_POS tmp;
 	pThis->_StateManager->_state->_ptz->getpos(tmp.p,tmp.t,tmp.z);
 	pThis->m_ipc->IPCSendMsg(querypos, &tmp, sizeof(tmp));
-	printf("ptz = %f,%f,%f\n", tmp.p,tmp.t,tmp.z);
+	//printf("%s:%s:%d   ptz = %f,%f,%f\n",__FILE__,__func__,__LINE__, tmp.p,tmp.t,tmp.z);
 #endif
 
 	exist = false;
@@ -1845,15 +1857,8 @@ void CEventManager::MSG_4test(void* p)
 
 void CEventManager::MSG_setpos(void* p)
 {
-	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;	
-	pThis->_StateManager->_state->_ptz->getpos(pThis->m_curpos.p,pThis->m_curpos.t,pThis->m_curpos.z);
-	if(fabs(pos->p) > 1.0)
-		pos->p = pThis->m_curpos.p;
-	if(fabs(pos->t) > 1.0)
-		pos->t = pThis->m_curpos.t;
-	if(fabs(pos->z) > 1.0)
-		pos->z = pThis->m_curpos.z;
-	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pos->z);
+	OSA_ThrHndl tmpHandle;
+	OSA_thrCreate(&tmpHandle, thrPtzsetpos, 0, 0, p);
 	return ;
 }
 
@@ -1862,6 +1867,69 @@ void CEventManager::MSG_INPUT_CTRLPARAMS(void* p)
 	CtrlParams_t* josParam = (CtrlParams_t*)p;
 	pThis->m_ipc->IPCSendMsg(josctrl, josParam, sizeof(CtrlParams_t));
 	return;	
+}
+
+
+void CEventManager::MSG_INPUT_STOP(void* p)
+{	
+	OSA_ThrHndl tmpHandle;
+	OSA_thrCreate(&tmpHandle, thrPtzstop, 0, 0, p);
+	return;	
+}
+
+void CEventManager::MSG_INPUT_LINKSETSPEED(void* p)
+{	
+	OSA_ThrHndl tmpHandle;
+	OSA_thrCreate(&tmpHandle, thrPtzsetspeed, 0, 0, p);
+
+	
+	return;	
+}
+
+
+void* CEventManager::thrPtzstop(void* p)
+{
+	OSA_thrDetach();
+	static bool exist = false;
+	if(exist)
+		return NULL;
+	exist = true;
+	
+	pThis->_StateManager->_state->_ptz->ptzStop();
+
+	exist = false;
+	return NULL;
+}
+
+void* CEventManager::thrPtzsetpos(void* p)
+{
+	OSA_thrDetach();
+	static bool exist = false;
+	if(exist)
+		return NULL;
+	exist = true;
+	
+	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;
+	printf("%s:%d set pos p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,pos->p,pos->t,pos->z);
+	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pos->z);
+
+	exist = false;
+}
+
+void* CEventManager::thrPtzsetspeed(void* p)
+{
+	OSA_thrDetach();
+	static bool exist = false;
+	if(exist)
+		return NULL;
+	exist = true;
+	
+	IPC_ONVIF_POS* rate = (IPC_ONVIF_POS*)p;
+	printf("%s:%d set rate p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,rate->p,rate->t,rate->z);
+	pThis->_StateManager->_state->_ptz->setPltSpeed(rate->p,rate->t,rate->z);
+
+	exist = false;
+	return NULL;
 }
 
 

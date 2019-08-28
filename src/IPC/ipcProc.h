@@ -25,6 +25,7 @@ public:
 
 	GstRectParm_t m_gstRectParm;
 	IPC_ONVIF_POS m_setpos;
+	IPC_ONVIF_POS m_setspeed;
 	CtrlParams_t m_ctrlprm;
 	
 private:
