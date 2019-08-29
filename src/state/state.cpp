@@ -25,6 +25,7 @@ DxTimer* State::m_timer = NULL;
 OSA_ThrHndl State::m_thrZoomServer;
 bool State::exitThreadZoomserver = false;
 int State::m_delta = 15;
+IPC_ONVIF_POS State::m_curpos;
 
 State::State()
 {

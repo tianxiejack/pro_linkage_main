@@ -121,7 +121,6 @@ public:
 	SELF_SemHndl m_semSendpos,m_semSendZoom;
 
 private:
-	IPC_ONVIF_POS m_curpos;
 	string m_gun_ip;
 	string m_gun_username;
 	string m_gun_password;

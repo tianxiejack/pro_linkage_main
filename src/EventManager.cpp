@@ -519,11 +519,10 @@ void* CEventManager::setZoom(void* p)
 
 void CEventManager::MSG_Com_QueryPtzPos(void* p)
 {
-	OSA_ThrHndl tmpHandle;
-	OSA_thrCreate(&tmpHandle, answerPos, 0, 0, p);
+	//OSA_ThrHndl tmpHandle;
+	//OSA_thrCreate(&tmpHandle, answerPos, 0, 0, p);
 	
-	//pThis->m_ipc->IPCSendMsg(querypos, &tmp, sizeof(tmp));
-
+	pThis->m_ipc->IPCSendMsg(querypos, &pThis->_StateManager->_state->m_curpos, sizeof(IPC_ONVIF_POS));
 	return ;
 }
 
@@ -1911,7 +1910,7 @@ void* CEventManager::thrPtzsetpos(void* p)
 	
 	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;
 	printf("%s:%d set pos p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,pos->p,pos->t,pos->z);
-	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pos->z);
+	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pThis->_StateManager->_state->m_curpos.z);
 
 	exist = false;
 }
