@@ -13,12 +13,7 @@ const float NOCHANGE = 2.0;
 
 CPTZ_ONVIF::CPTZ_ONVIF(const char* ip,const char* username,const char* password)
 {
-	printf("*********onvif**************\n\n");
-	printf("*** ip : %s  \n",ip);
-	printf("*** username : %s  \n",username);
-	printf("*** password : %s  \n",password);
-	
-	m_onvifHanle = IOnvif::getinstance(ip,username,password);
+ 	m_onvifHanle = IOnvif::getinstance(ip,username,password);
 }
 
 CPTZ_ONVIF::~CPTZ_ONVIF()
@@ -32,9 +27,7 @@ void CPTZ_ONVIF::ptzStop()
 
 void CPTZ_ONVIF::setPltSpeed(float p,float t,float z)
 {
-	unsigned int t1 = OSA_getCurTimeInMsec();
-	m_onvifHanle->continuesMove(p, t, z);
-	printf("elasep time : %u \n" ,OSA_getCurTimeInMsec()-t1 );
+ 	m_onvifHanle->continuesMove(p, t, z);
 }
 
 

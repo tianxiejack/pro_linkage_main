@@ -120,10 +120,7 @@ public:
 	Trkerr_t m_pixelErr;
 	SELF_SemHndl m_semSendpos,m_semSendZoom;
 
-private:
-	string m_gun_ip;
-	string m_gun_username;
-	string m_gun_password;
+ 
 };
 
 

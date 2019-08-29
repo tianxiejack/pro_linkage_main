@@ -712,23 +712,14 @@ int  CEventManager::ReadOnvifConfigFile()
 		{
 			FileStorage fr(cfgAvtFile, FileStorage::READ);
 			if(fr.isOpened())
-			{
-				sprintf(cfg_avt, "cfg_gun_ip_1");
-				m_gun_ip = (string)fr[cfg_avt];
-				sprintf(cfg_avt, "cfg_gun_name_1");
-				m_gun_username = (string)fr[cfg_avt];
-				sprintf(cfg_avt, "cfg_gun_password_1");
-				m_gun_password= (string)fr[cfg_avt];
+			{ 
 				sprintf(cfg_avt, "cfg_ball_ip_1");
 				_StateManager->_state->m_ball_ip = (string)fr[cfg_avt];
-				sprintf(cfg_avt, "cfg_ball_name_1");
-				_StateManager->_state->m_ball_username = (string)fr[cfg_avt];
-				sprintf(cfg_avt, "cfg_ball_onvif_name_1");
+ 				sprintf(cfg_avt, "cfg_ball_onvif_name_1");
 				_StateManager->_state->m_ball_onvif_name = (string)fr[cfg_avt];
 				sprintf(cfg_avt, "cfg_ball_onvif_password_1");
 				_StateManager->_state->m_ball_onvif_pswd = (string)fr[cfg_avt];
-	
-			}
+ 			}
 			else
 			{
 				printf("[get params]open YML failed\n");

@@ -112,9 +112,7 @@ private:
 
 public:
 	string m_ball_ip;
-	string m_ball_username;
-	string m_ball_password;
-	string m_ball_onvif_name;
+  	string m_ball_onvif_name;
 	string m_ball_onvif_pswd;
 	static IPC_ONVIF_POS m_curpos;
 };
