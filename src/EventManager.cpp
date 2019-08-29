@@ -1900,7 +1900,7 @@ void* CEventManager::thrPtzsetpos(void* p)
 	exist = true;
 	
 	IPC_ONVIF_POS* pos = (IPC_ONVIF_POS*)p;
-	printf("%s:%d set pos p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,pos->p,pos->t,pos->z);
+	//printf("%s:%d set pos p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,pos->p,pos->t,pos->z);
 	pThis->_StateManager->_state->_ptz->setpos(pos->p,pos->t,pThis->_StateManager->_state->m_curpos.z);
 
 	exist = false;
@@ -1915,7 +1915,7 @@ void* CEventManager::thrPtzsetspeed(void* p)
 	exist = true;
 	
 	IPC_ONVIF_POS* rate = (IPC_ONVIF_POS*)p;
-	printf("%s:%d set rate p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,rate->p,rate->t,rate->z);
+	//printf("%s:%d set rate p,t,z = (%f,%f,%f)\n",__FILE__,__LINE__,rate->p,rate->t,rate->z);
 	pThis->_StateManager->_state->_ptz->setPltSpeed(rate->p,rate->t,rate->z);
 
 	exist = false;
