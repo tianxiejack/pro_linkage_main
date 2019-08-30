@@ -111,6 +111,9 @@ int CIPCProc::IPCRecvMsg(void* prm)
 			memcpy(&m_setspeed,recvData.param,sizeof(IPC_ONVIF_POS));
 			return IPC_EVENT_SETSPEED;
 			break;
+		case josmode:
+			memcpy(&m_ctrlprm.ctrlMode,recvData.param,sizeof(int));
+			break;
 		default:
 			break;
 	}

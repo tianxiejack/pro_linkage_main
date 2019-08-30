@@ -1028,10 +1028,13 @@ void CEventParsing::parsingHKJos(unsigned char* jos_data)
 	static unsigned char HKJosZ = 0;
 	static bool xyvalid = false;
 	float val;
+
 	if(jos_data[usb_X] != HKJosX)
 	{
+		
 		val = HK_JosToSpeedX(jos_data[usb_X]);
 		ComParams.linkspeedx = val;
+		ComParams.oriDatap = jos_data[usb_X];
 		xyvalid = true;
 	}
 
@@ -1039,16 +1042,17 @@ void CEventParsing::parsingHKJos(unsigned char* jos_data)
 	{
 		val = -1*HK_JosToSpeedY(jos_data[usb_Y]);
 		ComParams.linkspeedy = val;
+		ComParams.oriDatat = jos_data[usb_Y];
 		xyvalid = true;			
 	}
-	
+
 	if(jos_data[usb_Z] != HKJosZ)
 	{
 		val = HK_JosToSpeedZ(jos_data[usb_Z]);
 		ComParams.linkspeedz = val;
 		xyvalid = true;			
 	}
-	
+
 	if(xyvalid)
 	{
 		_Msg->MSGDRIV_send(MSGID_EXT_INPUT_JOSPOS, &ComParams);

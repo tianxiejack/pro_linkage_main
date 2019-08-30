@@ -231,6 +231,8 @@ typedef struct{
 	float linkposp;
 	float linkpost;
 	float linkposz;
+	unsigned char oriDatap;
+	unsigned char oriDatat;
 }ComParams_t;
 
 typedef struct{
@@ -287,6 +289,7 @@ public:
 	static void *thread_Getaccept(void *p);
 	static void *thread_ReclaimConnect(void *p);
 	ComParams_t ComParams;
+	
 private:
 	static void *thread_netrecvEvent(void *p);
 	void parsingframe(unsigned char *tmpRcvBuff, int sizeRcv, comtype_t comtype);
@@ -303,7 +306,7 @@ private:
 	int  package_ACK_QueryPos(sendInfo *psendBuf);
 	int  package_ACK_QueryZoom(sendInfo *psendBuf);
 	int  package_ACK_Output(sendInfo *psendBuf);
-	int package_ACK_GetConfig(sendInfo *psendBuf);
+	int  package_ACK_GetConfig(sendInfo *psendBuf);
 	int  package_ACK_SetConfig(sendInfo *psendBuf);
 	int  package_ACK_DefaultConfig(sendInfo *psendBuf);
 	int  package_ACK_SaveConfig(sendInfo *psendBuf);

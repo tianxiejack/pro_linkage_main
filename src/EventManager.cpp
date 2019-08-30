@@ -13,7 +13,7 @@ extern OSA_SemHndl  m_semHndl;
 extern OSA_SemHndl m_semHndl_s;
 const int profileNum = CFGID_BKID_MAX*16;
 
-CEventManager::CEventManager()
+CEventManager::CEventManager():	m_threxitflag(false)
 {
 	pThis = this;
 	exit_ipcthread = false;
@@ -33,14 +33,21 @@ CEventManager::CEventManager()
 	
 	SELF_semCreate(&m_semSendpos);
 	SELF_semCreate(&m_semSendZoom);
-	
+	SELF_semCreate(&m_thrVirtualmousey);
+	SELF_semCreate(&m_thrVirtualmousex);
+
+	OSA_thrCreate(&virtualMousex, thrVirtualMousex, 0, 0, 0);
+	OSA_thrCreate(&virtualMousey, thrVirtualMousey, 0, 0, 0);
 }
 
 CEventManager::~CEventManager()
 {
+	SELF_semDelete(&m_thrVirtualmousex);
+	SELF_semDelete(&m_thrVirtualmousey);
 	SELF_semDelete(&m_semSendpos);
 	SELF_semDelete(&m_semSendZoom);
 
+	m_threxitflag = true;
 	exit_ipcthread = true;
 	exit_ipcGstthread = true;
 	delete pThis;
@@ -324,12 +331,177 @@ void CEventManager::MSG_WorkMode(void* p)
 
 void CEventManager::MSG_JosPos(void* p)
 {
+	OSA_ThrHndl tmpHandle;
 	ComParams_t* tmp = (ComParams_t *)p;
-	
-	pThis->_StateManager->_state->axisMove_interface(tmp->linkspeedx, tmp->linkspeedy,tmp->linkspeedz);
 
+	if(0 == pThis->m_ipc->m_ctrlprm.ctrlMode)
+		pThis->_StateManager->_state->axisMove_interface(tmp->linkspeedx, tmp->linkspeedy,tmp->linkspeedz);
+	else if(1 == pThis->m_ipc->m_ctrlprm.ctrlMode)
+	{
+		pThis->m_oriDatap = tmp->oriDatap;
+		pThis->m_oriDatat = tmp->oriDatat;
+		//SELF_semSignal(&pThis->m_thrVirtualmousex);
+		//SELF_semSignal(&pThis->m_thrVirtualmousey);
+	}
 	return ;
 }
+
+int CEventManager::getDelay4VirtualMouse(unsigned char in)
+{
+	int ret = 0;
+	switch(in)
+	{
+		case 0xef:
+		case 0x11:
+			ret = 90000;
+			break;
+
+		case 0xde:
+		case 0x22:
+			ret = 60000;
+			break;
+
+		case 0xcd:
+		case 0x33:
+			ret = 50000;
+			break;
+
+		case 0xbc:
+		case 0x44:
+			ret = 40000;
+			break;
+
+		case 0xab:
+		case 0x55:
+			ret = 30000;
+			break;
+
+		case 0x9a:
+		case 0x66:
+			ret = 10000;
+			break;
+
+		case 0x89:
+		case 0x77:
+			ret = 10000;
+			break;
+		case 0x00:
+			break;
+	}
+	return ret;
+}
+
+void CEventManager::HK_JosToMousey(unsigned char y)
+{
+	CtrlParams_t* tmpCtrl = &m_ipc->m_ctrlprm;
+	int height = 1080;
+	struct timeval tmp;
+	int curY;
+	static int H = height/2;
+
+	tmp.tv_sec = 0;
+	tmp.tv_usec = getDelay4VirtualMouse(y);
+	
+	if(y == 0xef)
+		H -= 1;
+	else if(y == 0x11)
+		H += 1;
+	else if(y == 0xde)
+		H -= 2;
+	else if(y == 0x22)
+		H += 2;
+	else if(y == 0xcd)
+		H -= 4;
+	else if(y == 0x33)
+		H += 4;
+	else if(y == 0xbc)
+		H -= 6;
+	else if( y== 0x44)
+		H += 6;
+	else if(y == 0xab)
+		H -= 12;
+	else if(y == 0x55)
+		H += 12;
+	else if(y == 0x9a)
+		H -= 20;
+	else if(y == 0x66)
+		H += 20;
+	else if(y == 0x89)
+		H -= 30;
+	else if( y == 0x77)
+		H += 30;
+	
+	curY = H;
+	if(curY > (height - 20))
+		H = curY = height - 20;
+	else if(curY < 0)
+		H = curY = 0;
+	
+	tmpCtrl->cursor_y = curY;
+	tmpCtrl->type = cursor_move;
+	
+	m_ipc->IPCSendMsg(josctrl,tmpCtrl, sizeof(CtrlParams_t));
+
+	select(0, NULL, NULL, NULL, &tmp);
+
+	return;
+}
+
+
+void CEventManager::HK_JosToMousex(unsigned char x)
+{
+	CtrlParams_t* tmpCtrl = &m_ipc->m_ctrlprm;
+	int width = 1920;
+	struct timeval tmp;
+	int curX;
+	static int W = width/2;
+
+	tmp.tv_sec = 0;
+	tmp.tv_usec = getDelay4VirtualMouse(x);
+
+	if(x == 0xef)
+		W -= 1;
+	else if(x== 0x11)
+		W += 1;
+	else if(x == 0xde)
+		W -= 2;
+	else if(x == 0x22)
+		W += 2;
+	else if(x == 0xcd)
+		W -= 4;
+	else if(x == 0x33)
+		W += 4;
+	else if (x == 0xbc)
+		W -= 5;
+	else if(x == 0x44)
+		W += 5;
+	else if(x == 0xab)
+		W -= 15;
+	else if (x == 0x55)
+		W += 15;
+	else if(x == 0x9a)
+		W -= 25;
+	else if(x == 0x66)
+		W += 25;
+	else if(x == 0x89)
+		W -= 45;
+	else if(x == 0x77)
+		W += 45;
+
+	curX = W;
+	if(curX > (width - 15) )
+		W = curX = width - 15;
+	else if(curX < 0)
+		W = curX = 0;
+	tmpCtrl->cursor_x = curX;
+	tmpCtrl->type = cursor_move;
+	m_ipc->IPCSendMsg(josctrl, tmpCtrl, sizeof(CtrlParams_t));
+
+	select(0, NULL, NULL, NULL, &tmp);
+	return;
+}
+
+
 
 void CEventManager::MSG_Com_SelfCheck(void* p)
 {
@@ -1870,9 +2042,7 @@ void CEventManager::MSG_INPUT_STOP(void* p)
 void CEventManager::MSG_INPUT_LINKSETSPEED(void* p)
 {	
 	OSA_ThrHndl tmpHandle;
-	OSA_thrCreate(&tmpHandle, thrPtzsetspeed, 0, 0, p);
-
-	
+	OSA_thrCreate(&tmpHandle, thrPtzsetspeed, 0, 0, p);	
 	return;	
 }
 
@@ -1921,5 +2091,37 @@ void* CEventManager::thrPtzsetspeed(void* p)
 	exist = false;
 	return NULL;
 }
+
+void* CEventManager::thrVirtualMousex(void* p)
+{
+	struct timeval thrJosMap;
+	while( false == pThis->m_threxitflag )
+	{
+		thrJosMap.tv_sec = 0;
+		thrJosMap.tv_usec = 10000;
+		select(0, NULL, NULL, NULL, &thrJosMap);
+		//SELF_semWait(&pThis->m_thrVirtualmousex, OSA_TIMEOUT_FOREVER);		
+		if( pThis->m_oriDatap && (1 == pThis->m_ipc->m_ctrlprm.ctrlMode))
+			pThis->HK_JosToMousex(pThis->m_oriDatap);
+	}
+	return NULL;
+}
+
+void* CEventManager::thrVirtualMousey(void* p)
+{
+	struct timeval thrJosMap;
+	CtrlParams_t* tmp = &pThis->m_ipc->m_ctrlprm;
+	while( false == pThis->m_threxitflag )
+	{
+		thrJosMap.tv_sec = 0;
+		thrJosMap.tv_usec = 10000;
+		select(0, NULL, NULL, NULL, &thrJosMap);
+		//SELF_semWait(&pThis->m_thrVirtualmousey, OSA_TIMEOUT_FOREVER);
+		if( pThis->m_oriDatat && (1 == pThis->m_ipc->m_ctrlprm.ctrlMode))
+			pThis->HK_JosToMousey(pThis->m_oriDatat);
+	}
+	return NULL;
+}
+
 
 

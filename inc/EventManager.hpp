@@ -42,7 +42,10 @@ private:
 	comtype_t outcomtype;
 	void IPC_Creat();
 	void MSG_register();
-	
+	bool m_threxitflag;
+	SELF_SemHndl m_thrVirtualmousey;
+	SELF_SemHndl m_thrVirtualmousex;
+	OSA_ThrHndl virtualMousex,virtualMousey;
 
 private:
 	static void MSG_Trk(void* p);
@@ -81,7 +84,9 @@ private:
 	static void MSG_INPUT_STOP(void* p);
 	static void MSG_INPUT_LINKSETSPEED(void* p);
 
-
+	void HK_JosToMousex(unsigned char x);
+	void HK_JosToMousey(unsigned char y);
+	int getDelay4VirtualMouse(unsigned char in);
 
 	int  ReadConfigFile();
 	int SetConfig(comtype_t comtype, int block, int field, int value,char *inBuf);
@@ -108,6 +113,8 @@ public:
 	static void* thrPtzstop(void* p);
 	static void* thrPtzsetpos(void* p);
 	static void* thrPtzsetspeed(void* p);
+	static void* thrVirtualMousex(void* p);
+	static void* thrVirtualMousey(void* p);
 
 	int getBaseAddress(int* data);
 	bool isRelation2fov(int block , int field);
@@ -119,8 +126,9 @@ public:
 	OSA_ThrHndl ipcGstEvent_thid;
 	Trkerr_t m_pixelErr;
 	SELF_SemHndl m_semSendpos,m_semSendZoom;
-
- 
+	
+	unsigned char m_oriDatap;
+	unsigned char m_oriDatat;
 };
 
 

@@ -352,7 +352,7 @@ void State::axisMove_interface(float x, float y)
 
 void State::axisMove_interface(float p, float t,float z)
 {	
-	if(m_ipc->m_ctrlprm.workMode != Auto_linkage)
+	if(m_ipc->m_ctrlprm.workMode != Auto_linkage && !m_ipc->m_ctrlprm.menu)
 		_ptz->setPltSpeed(p,t,z);
 	
 	if(m_ipc->m_ctrlprm.menu && m_ipc->m_ctrlprm.workMode != calibmode)
