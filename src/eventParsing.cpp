@@ -992,12 +992,12 @@ void CEventParsing::parsingHKButton(unsigned char* jos_data)
 				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;
 			case hk_button_left:
-				//m_josParams.jos_button = buttonLeft;
-				//_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
+				m_josParams.jos_button = buttonLeft;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;		
 			case hk_button_right:
-				//m_josParams.jos_button = buttonRigth;
-				//_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
+				m_josParams.jos_button = buttonRigth;
+				_Msg->MSGDRIV_send(MSGID_IPC_INPUT_CTRLPARAMS,(void*)&m_josParams);
 				break;	
 			default:
 				break;

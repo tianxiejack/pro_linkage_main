@@ -33,8 +33,6 @@ CEventManager::CEventManager():	m_threxitflag(false)
 	
 	SELF_semCreate(&m_semSendpos);
 	SELF_semCreate(&m_semSendZoom);
-	SELF_semCreate(&m_thrVirtualmousey);
-	SELF_semCreate(&m_thrVirtualmousex);
 
 	OSA_thrCreate(&virtualMousex, thrVirtualMousex, 0, 0, 0);
 	OSA_thrCreate(&virtualMousey, thrVirtualMousey, 0, 0, 0);
@@ -42,8 +40,6 @@ CEventManager::CEventManager():	m_threxitflag(false)
 
 CEventManager::~CEventManager()
 {
-	SELF_semDelete(&m_thrVirtualmousex);
-	SELF_semDelete(&m_thrVirtualmousey);
 	SELF_semDelete(&m_semSendpos);
 	SELF_semDelete(&m_semSendZoom);
 
@@ -340,8 +336,6 @@ void CEventManager::MSG_JosPos(void* p)
 	{
 		pThis->m_oriDatap = tmp->oriDatap;
 		pThis->m_oriDatat = tmp->oriDatat;
-		//SELF_semSignal(&pThis->m_thrVirtualmousex);
-		//SELF_semSignal(&pThis->m_thrVirtualmousey);
 	}
 	return ;
 }
@@ -2100,7 +2094,6 @@ void* CEventManager::thrVirtualMousex(void* p)
 		thrJosMap.tv_sec = 0;
 		thrJosMap.tv_usec = 10000;
 		select(0, NULL, NULL, NULL, &thrJosMap);
-		//SELF_semWait(&pThis->m_thrVirtualmousex, OSA_TIMEOUT_FOREVER);		
 		if( pThis->m_oriDatap && (1 == pThis->m_ipc->m_ctrlprm.ctrlMode))
 			pThis->HK_JosToMousex(pThis->m_oriDatap);
 	}
@@ -2116,7 +2109,6 @@ void* CEventManager::thrVirtualMousey(void* p)
 		thrJosMap.tv_sec = 0;
 		thrJosMap.tv_usec = 10000;
 		select(0, NULL, NULL, NULL, &thrJosMap);
-		//SELF_semWait(&pThis->m_thrVirtualmousey, OSA_TIMEOUT_FOREVER);
 		if( pThis->m_oriDatat && (1 == pThis->m_ipc->m_ctrlprm.ctrlMode))
 			pThis->HK_JosToMousey(pThis->m_oriDatat);
 	}

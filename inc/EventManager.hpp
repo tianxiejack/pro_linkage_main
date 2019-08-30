@@ -43,8 +43,6 @@ private:
 	void IPC_Creat();
 	void MSG_register();
 	bool m_threxitflag;
-	SELF_SemHndl m_thrVirtualmousey;
-	SELF_SemHndl m_thrVirtualmousex;
 	OSA_ThrHndl virtualMousex,virtualMousey;
 
 private:
